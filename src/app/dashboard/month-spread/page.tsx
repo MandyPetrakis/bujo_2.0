@@ -1,4 +1,4 @@
-import Habits from "../ui/month-view/habits";
+import Habits from "../../ui/month-spread/habits";
 
 export default function Page() {
   return (
