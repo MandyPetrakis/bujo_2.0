@@ -1,3 +1,3 @@
-export default function Page() {
+export default function WeekSpread() {
   return <p>Week</p>;
 }

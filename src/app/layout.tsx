@@ -1,4 +1,4 @@
-import { syncopate } from "./ui/fonts";
+import { syncopate } from "./components/fonts";
 import "./globals.css";
 
 export default function RootLayout({
