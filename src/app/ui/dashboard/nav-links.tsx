@@ -1,7 +1,5 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import clsx from "clsx";
 
 const links = [
   { name: "Year", href: "/dashboard/year-spread" },
@@ -13,7 +11,7 @@ const links = [
 ];
 
 export default function NavLinks() {
-  const pathname = usePathname();
+  //   const pathname = usePathname();
   return (
     <>
       {links.map((link) => {
@@ -21,13 +19,7 @@ export default function NavLinks() {
           <Link
             key={link.name}
             href={link.href}
-            className={clsx(
-              "flex h-[48px] grow items-center justify-center  bg-light text-medium  p-3 text-sm hover:bg-medium hover:text-light md:flex-none md:justify-start md:p-2 md:px-3",
-              {
-                "bg-dark text-light hover:bg-dark hover:text-light":
-                  pathname === link.href,
-              }
-            )}
+            className="flex h-[48px] grow items-center justify-center  bg-light text-medium  p-3 text-sm hover:bg-medium hover:text-light md:flex-none md:justify-start md:p-2 md:px-3"
           >
             <p>{link.name}</p>
           </Link>
