@@ -1,5 +1,9 @@
 import NavLinks from "./nav-links";
 
 export default function NavBar() {
-  return <NavLinks />;
+  return (
+    <div className="flex items-center justify-between">
+      <NavLinks />
+    </div>
+  );
 }
