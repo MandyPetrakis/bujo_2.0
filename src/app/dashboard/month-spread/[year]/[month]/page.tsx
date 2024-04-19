@@ -21,7 +21,10 @@ export default function MonthSpread({
         <MonthHeader month={month} />
         <NextButton month={month} year={year} />
       </div>
-      <Calendar year={year} month={month} />
+      <div className="flex">
+        <Calendar year={year} month={month} />
+        <Habits year={year} month={month} />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { EventsDisplay } from "./definitions";
+import { EventsDisplay, HabitsDisplay } from "./definitions";
 
 //date helper funcions
 
@@ -10,8 +10,6 @@ export function getDate() {
   const date = today.getDate();
   return { month, date, year };
 }
-
-export function updateDate() {}
 
 export function getDisplayMonth(month: number) {
   const displayMonth = month - 1;
@@ -52,30 +50,44 @@ export function getDayOfWeek(year: number, month: number, day: number) {
   return daysOfWeek[date.getDay()];
 }
 
-export async function fetchEventsByMonth(year: number, month: number) {
-  //   noStore();
-
-  const daysInMonth: number = new Date(year, month, 0).getDate();
-  const start = `${year}-${month}-01`;
-  const end = `${year}-${month}-${daysInMonth}`;
-
-  try {
-    const data = await sql<EventsDisplay>`
-      SELECT
-        events.id,
-        events.description,
-        events.date
-      FROM events
-      WHERE events.date BETWEEN ${start} AND ${end};
-    `;
-    const events = data.rows;
-
-    return events;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch events.");
-  }
+export function createMonthArray(year: number, month: number) {
+  const length = getDaysInMonth(year, month);
+  return Array.from({ length }, (_, index) => {
+    const date = new Date(`${year}-${month}-${index + 1}`).toDateString();
+    return {
+      day: index + 1,
+      dayOfWeek: getDayOfWeek(year, month, index + 1),
+      date: date,
+    };
+  });
 }
+
+// fetch events
+
+// export async function fetchEventsByMonth(year: number, month: number) {
+//   //   noStore();
+
+//   const daysInMonth: number = new Date(year, month, 0).getDate();
+//   const start = `${year}-${month}-01`;
+//   const end = `${year}-${month}-${daysInMonth}`;
+
+//   try {
+//     const data = await sql<EventsDisplay>`
+//       SELECT
+//         events.id,
+//         events.description,
+//         events.date
+//       FROM events
+//       WHERE events.date BETWEEN ${start} AND ${end};
+//     `;
+//     const events = data.rows;
+
+//     return events;
+//   } catch (error) {
+//     console.error("Database Error:", error);
+//     throw new Error("Failed to fetch events.");
+//   }
+// }
 
 export async function fetchEventsByDay(date: string) {
   //   noStore();
@@ -99,14 +111,26 @@ export async function fetchEventsByDay(date: string) {
   }
 }
 
-export function createCalendar(year: number, month: number) {
-  const length = getDaysInMonth(year, month);
-  return Array.from({ length }, (_, index) => {
-    const date = new Date(`${year}-${month}-${index + 1}`).toDateString();
-    return {
-      day: index + 1,
-      dayOfWeek: getDayOfWeek(year, month, index + 1),
-      date: date,
-    };
-  });
+//fetch habits
+
+export async function fetchActiveHabits(year: number, month: number) {
+  const daysInMonth: number = getDaysInMonth(year, month);
+  const date = `${year}-${month}-${daysInMonth}`;
+  try {
+    const data = await sql<HabitsDisplay>`
+      SELECT
+        habits.id,
+        habits.description,
+        habits.dates_completed
+      FROM habits
+        WHERE habits.active_month < ${date} AND habits.active = true;
+    `;
+
+    const habits = data.rows;
+
+    return habits;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
 }

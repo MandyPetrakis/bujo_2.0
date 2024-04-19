@@ -16,10 +16,17 @@ export default async function Day({
   const eventsDisplay = events.map((event) => event.description);
 
   return (
-    <div key={params.day.day}>
-      {params.day.day}
-      {params.day.dayOfWeek.charAt(0)}
-      <>{eventsDisplay}</>
+    <div
+      className="flex h-5 mb-2 text-sm border-b border-medium"
+      key={params.day.day}
+    >
+      <div className="w-7 flex font-semibold justify-end mr-1">
+        {params.day.day}
+      </div>
+      <div className="w-5 flex justify-center mr-1">
+        {params.day.dayOfWeek.charAt(0)}
+      </div>
+      <div>{eventsDisplay}</div>
     </div>
   );
 }

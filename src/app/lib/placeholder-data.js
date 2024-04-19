@@ -78,13 +78,25 @@ const habits = [
     id: "3958dc0e-787f-4377-85e9-fec4b6a6442a",
     user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
     description: "Code",
-    dates: ["2024-04-02", "2024-04-01", "2024-04-03", "2024-04-06"],
+    active_month: "2024-4-01",
+    active: true,
+    dates_completed: '{"2024-04-02", "2024-04-01", "2024-04-03", "2024-04-06"}',
   },
   {
-    id: "3958dc0e-787f-4377-85e9-fec4b6a6442a",
+    id: "3958dc0e-787f-4377-85e9-fec4b6a6492a",
     user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
     description: "No Caf",
-    dates: ["2024-04-02", "2024-04-01", "2024-04-03", "2024-04-06"],
+    active_month: "2024-4-01",
+    active: true,
+    dates_completed: '{"2024-04-02", "2024-04-01", "2024-04-03", "2024-04-06"}',
+  },
+  {
+    id: "3958dc0e-787f-4377-85e9-fec4b6a6452a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    description: "Workout",
+    active_month: "2024-4-01",
+    active: true,
+    dates_completed: '{"2024-04-02", "2024-04-01", "2024-04-03", "2024-04-06"}',
   },
 ];
 

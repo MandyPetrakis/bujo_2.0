@@ -134,7 +134,9 @@ async function seedHabits(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         description TEXT NOT NULL,
         user_id UUID NOT NULL,
-        dates DATE[] NOT NULL
+        active_month DATE NOT NULL, 
+        active BOOLEAN NOT NULL, 
+        dates_completed DATE[] NOT NULL
       );
     `;
 
@@ -144,8 +146,8 @@ async function seedHabits(client) {
     const insertedHabits = await Promise.all(
       habits.map(
         (habit) => client.sql`
-        INSERT INTO habits (id, description, user_id, dates)
-        VALUES (${habit.id}, ${habit.description}, ${habit.user_id}, ${habit.dates})
+        INSERT INTO habits (id, description, user_id, active, active_month, dates_completed)
+        VALUES (${habit.id}, ${habit.description}, ${habit.user_id}, ${habit.active}, ${habit.active_month}, ${habit.dates_completed})
         ON CONFLICT (id) DO NOTHING;
       `
       )
