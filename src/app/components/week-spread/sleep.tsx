@@ -56,7 +56,9 @@ export default async function SleepTracker(props: { startOfWeek: Date }) {
     return { hour: hour };
   });
   const hoursDispaly = hoursArray.map((h) => (
-    <p className="w-5 flex place-content-center text-sm">{h.hour}</p>
+    <p key={h.hour} className="w-5 flex place-content-center text-sm">
+      {h.hour}
+    </p>
   ));
   return (
     <div className="ml-5 border p-5">
