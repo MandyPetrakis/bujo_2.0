@@ -18,14 +18,14 @@ const links = [
 export default function NavLinks() {
   const pathname = usePathname();
   return (
-    <>
+    <div className="flex mt-[550px] ml-4 -rotate-90">
       {links.map((link) => {
         return (
           <Link
             key={link.name}
             href={link.href}
             className={clsx(
-              "flex h-[48px] rounded-t-lg flex-auto items-center justify-center bg-light p-3 text-md hover:bg-medium hover:text-light",
+              "flex h-[40px] rounded-t-lg items-center justify-center bg-light px-12 py-6 text-sm hover:bg-medium hover:text-light",
               {
                 "bg-dark text-light hover:bg-dark": pathname === link.href,
               }
@@ -35,6 +35,6 @@ export default function NavLinks() {
           </Link>
         );
       })}
-    </>
+    </div>
   );
 }

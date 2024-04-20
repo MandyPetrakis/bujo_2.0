@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { EventsDisplay, HabitsDisplay } from "./definitions";
+import { EventsDisplay, HabitsDisplay, TodoDisplay } from "./definitions";
 
 //date helper funcions
 
@@ -129,6 +129,29 @@ export async function fetchActiveHabits(year: number, month: number) {
     const habits = data.rows;
 
     return habits;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+//fetch todos
+export async function fetchIncompleteToDos() {
+  try {
+    const data = await sql<TodoDisplay>`
+      SELECT
+        todos.id,
+        todos.description,
+        todos.complete,
+        todos.due_date,
+        todos.completed_date
+      FROM todos
+        WHERE todos.complete = false
+    `;
+
+    const todos = data.rows;
+
+    return todos;
   } catch (error) {
     console.error("Database Error:", error);
     return [];

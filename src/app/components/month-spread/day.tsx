@@ -17,7 +17,7 @@ export default async function Day({
 
   return (
     <div
-      className="flex h-5 mb-2 text-sm border-b border-medium"
+      className="flex whitespace-nowrap h-[16px] mb-[8px] text-xs border-b border-medium"
       key={params.day.day}
     >
       <div className="w-7 flex font-semibold justify-end mr-1">

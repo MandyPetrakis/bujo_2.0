@@ -1,0 +1,25 @@
+import { fetchIncompleteToDos } from "@/app/lib/data";
+import { sacramento } from "../fonts";
+
+export default async function Todos() {
+  const todoList = await fetchIncompleteToDos();
+  console.log(todoList);
+
+  const todoRender = todoList.map((todo) => {
+    return (
+      <div className="flex whitespace-nowrap">
+        <div className="w-5 flex-none h-5 border mr-1 "></div>
+        {todo.description}
+      </div>
+    );
+  });
+
+  return (
+    <div className="p-5 pb-10 text-sm border min-w-fit w-1/3 h-full">
+      <div className="flex place-content-center font-semibold pb-5">
+        To Do List
+      </div>
+      <div className="max-h-full overflow-scroll">{todoRender}</div>
+    </div>
+  );
+}
