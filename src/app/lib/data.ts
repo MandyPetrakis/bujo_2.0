@@ -1,6 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { EventsDisplay, HabitsDisplay, TodoDisplay } from "./definitions";
-
+import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 //date helper funcions
 
 export function getDate() {
@@ -57,11 +57,44 @@ export function createMonthArray(year: number, month: number) {
     return {
       day: index + 1,
       dayOfWeek: getDayOfWeek(year, month, index + 1),
-      date: date,
+      date: addDays(date, index),
     };
   });
 }
 
+//week date helpers
+
+export function getWeekNumber(date: Date) {
+  const weekNumber = getWeek(date);
+  return weekNumber;
+}
+
+export function getDateOfWeek(week: number, year: number) {
+  const janOne = new Date(year, 0, 1);
+  const date: Date = addWeeks(janOne, week - 1);
+  return date;
+}
+
+export function createWeekArray(startDate: Date) {
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const length = 7;
+  return Array.from({ length }, (_, index) => {
+    const date = addDays(startDate, index);
+    return {
+      dayOfWeek: daysOfWeek[getDay(date)],
+      date: date.getDate(),
+      month: getDisplayMonth(date.getMonth()),
+    };
+  });
+}
 // fetch events
 
 // export async function fetchEventsByMonth(year: number, month: number) {

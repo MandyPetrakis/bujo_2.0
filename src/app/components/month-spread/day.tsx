@@ -7,11 +7,11 @@ export default async function Day({
     day: {
       day: number;
       dayOfWeek: string;
-      date: string;
+      date: Date;
     };
   };
 }) {
-  const events = await fetchEventsByDay(params.day.date);
+  const events = await fetchEventsByDay(params.day.date.toDateString());
 
   const eventsDisplay = events.map((event) => event.description);
 

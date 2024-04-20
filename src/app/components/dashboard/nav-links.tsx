@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { getDate } from "@/app/lib/data";
+import { getDate, getWeekNumber } from "@/app/lib/data";
 
 const { year, month } = getDate();
+const weekNumber = getWeekNumber(new Date());
 
 const links = [
   { name: "Year", href: "/dashboard/year-spread" },
@@ -12,7 +13,7 @@ const links = [
     name: "Month",
     href: `/dashboard/month-spread/${year}/${month}`,
   },
-  { name: "Week", href: "/dashboard/week-spread" },
+  { name: "Week", href: `/dashboard/week-spread/${year}/${weekNumber}` },
 ];
 
 export default function NavLinks() {
