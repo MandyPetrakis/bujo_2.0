@@ -2,14 +2,12 @@ import WeekDay from "./weekday";
 import { isSunday, previousSunday } from "date-fns";
 import { createWeekArray } from "@/app/lib/data";
 
-export default async function Week(props: { date: Date; weeknumber: number }) {
-  let startOfWeek;
-
-  isSunday(props.date)
-    ? (startOfWeek = props.date)
-    : (startOfWeek = previousSunday(props.date));
-
-  const weekArray = createWeekArray(startOfWeek);
+export default async function Week(props: {
+  date: Date;
+  weeknumber: number;
+  startOfWeek: Date;
+}) {
+  const weekArray = createWeekArray(props.startOfWeek);
 
   const displayWeek = weekArray.map((day) => {
     return (

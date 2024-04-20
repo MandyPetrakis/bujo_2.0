@@ -91,7 +91,7 @@ export function createWeekArray(startDate: Date) {
     return {
       dayOfWeek: daysOfWeek[getDay(date)],
       day: date.getDate(),
-      month: getDisplayMonth(date.getMonth()),
+      month: getDisplayMonth(date.getMonth() + 1),
       date: date,
     };
   });
