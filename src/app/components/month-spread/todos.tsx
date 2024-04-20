@@ -1,9 +1,7 @@
 import { fetchIncompleteToDos } from "@/app/lib/data";
-import { sacramento } from "../fonts";
 
 export default async function Todos() {
   const todoList = await fetchIncompleteToDos();
-  console.log(todoList);
 
   const todoRender = todoList.map((todo) => {
     return (

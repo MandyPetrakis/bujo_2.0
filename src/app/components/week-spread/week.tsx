@@ -15,17 +15,13 @@ export default async function Week(props: { date: Date; weeknumber: number }) {
     return (
       <WeekDay
         key={day.dayOfWeek}
-        date={day.date}
+        day={day.day}
         dayOfWeek={day.dayOfWeek}
         month={day.month}
+        date={day.date}
       />
     );
   });
 
-  return (
-    <div>
-      {props.weeknumber}
-      <div className="flex">{displayWeek}</div>
-    </div>
-  );
+  return <div className="flex w-full ">{displayWeek}</div>;
 }

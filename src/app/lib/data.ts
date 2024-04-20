@@ -90,8 +90,9 @@ export function createWeekArray(startDate: Date) {
     const date = addDays(startDate, index);
     return {
       dayOfWeek: daysOfWeek[getDay(date)],
-      date: date.getDate(),
+      day: date.getDate(),
       month: getDisplayMonth(date.getMonth()),
+      date: date,
     };
   });
 }
