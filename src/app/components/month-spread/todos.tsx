@@ -5,7 +5,7 @@ export default async function Todos() {
 
   const todoRender = todoList.map((todo) => {
     return (
-      <div className="flex whitespace-nowrap">
+      <div key={todo.id} className="flex whitespace-nowrap">
         <div className="w-5 flex-none h-5 border mr-1 "></div>
         {todo.description}
       </div>
