@@ -1,9 +1,9 @@
-import { createWeekArray } from "@/app/lib/data";
 import clsx from "clsx";
 
-export default async function SleepTracker(props: { startOfWeek: Date }) {
-  const sleepArray = createWeekArray(props.startOfWeek);
-
+export default async function SleepTracker(props: {
+  startOfWeek: Date;
+  weekArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
+}) {
   const sleepTimes = [
     [10, 11, 12, 13, 14, 15, 16, 17],
     [12, 13, 14, 15, 16, 17, 18, 19],
@@ -14,7 +14,7 @@ export default async function SleepTracker(props: { startOfWeek: Date }) {
     [11, 12, 13, 14, 15, 16, 17, 18, 19],
   ];
 
-  const sleepDisplay = sleepArray.map((day, index) => {
+  const sleepDisplay = props.weekArray.map((day, index) => {
     const sleepHours = sleepTimes[index];
     const length = 12;
     const startTime = 10;
@@ -22,22 +22,21 @@ export default async function SleepTracker(props: { startOfWeek: Date }) {
     const hours = Array.from({ length }, (_, index) => {
       const sleeping = sleepHours.includes(startTime + index);
       return (
-        <div
-          key={startTime + index}
-          className={clsx("h-3 w-5", {
-            "bg-dark": sleeping === true,
-          })}
-        ></div>
+        <div className="h-[24px] place-content-center flex">
+          <div
+            key={startTime + index}
+            className={clsx("h-3 w-5", {
+              "bg-dark": sleeping === true,
+            })}
+          ></div>
+        </div>
       );
     });
 
     return (
-      <div key={day.day} className="flex items-center">
-        <p className="mr-2 w-7 font-semibold border-r flex place-content-center">
-          {day.dayOfWeek.charAt(0)}
-        </p>
+      <div key={day.day} className="flex items-center pl-10">
         {hours}
-        <p className="flex place-content-center text-sm pl-2">
+        <p className="flex place-content-center text-sm h-[24px] ">
           {sleepHours.length}
         </p>
       </div>
@@ -61,11 +60,11 @@ export default async function SleepTracker(props: { startOfWeek: Date }) {
     </p>
   ));
   return (
-    <div className="ml-5 border p-5">
-      <p className="flex place-content-center text-sm font-semibold mb-3">
-        Sleep Tracker
+    <div className="py-5">
+      <p className="flex place-content-center text-sm font-semibold mb-5">
+        Sleep
       </p>
-      <div className="flex pl-8">{hoursDispaly}</div>
+      <div className="flex pl-8 mb-2">{hoursDispaly}</div>
       {sleepDisplay}
     </div>
   );

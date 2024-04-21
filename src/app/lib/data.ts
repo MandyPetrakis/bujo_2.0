@@ -149,7 +149,7 @@ export async function fetchEventsByDay(date: string) {
 
 export async function fetchActiveHabits(year: number, month: number) {
   const daysInMonth: number = getDaysInMonth(year, month);
-  const date = `${year}-${month}-${daysInMonth}`;
+  // const date = `${year}-${month}-${daysInMonth}`;
   try {
     const data = await sql<HabitsDisplay>`
       SELECT
@@ -157,7 +157,7 @@ export async function fetchActiveHabits(year: number, month: number) {
         habits.description,
         habits.dates_completed
       FROM habits
-        WHERE habits.active_month < ${date} AND habits.active = true;
+        WHERE habits.active = true;
     `;
 
     const habits = data.rows;

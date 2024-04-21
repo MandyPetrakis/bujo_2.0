@@ -1,11 +1,11 @@
 import WeekDay from "./weekday";
-import { isSunday, previousSunday } from "date-fns";
 import { createWeekArray } from "@/app/lib/data";
 
 export default async function Week(props: {
   date: Date;
   weeknumber: number;
   startOfWeek: Date;
+  weekArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
   const weekArray = createWeekArray(props.startOfWeek);
 

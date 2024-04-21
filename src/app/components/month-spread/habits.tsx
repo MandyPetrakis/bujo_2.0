@@ -26,7 +26,7 @@ export default async function Habits(props: { year: number; month: number }) {
         <div className="-rotate-45 whitespace-nowrap w-[5px] text-xs">
           {habit.description}
         </div>
-        <div>{monthArray}</div>
+        <div className="">{monthArray}</div>
       </div>
     );
   });
