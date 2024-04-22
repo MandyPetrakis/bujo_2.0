@@ -1,8 +1,10 @@
 import Todos from "@/app/components/month-spread/todos";
 import Tracking from "@/app/components/week-spread/tracking";
+import WeekHeader from "@/app/components/week-spread/week-header";
 import Week from "@/app/components/week-spread/week";
 import { getDateOfWeek, createWeekArray } from "@/app/lib/data";
 import { isSunday, previousSunday } from "date-fns";
+import { PreviousButton, NextButton } from "@/app/components/buttons";
 
 export default function WeekSpread({
   params,
@@ -17,8 +19,20 @@ export default function WeekSpread({
 
   return (
     <div className="pt-10 pb-5 h-screen w-full">
-      <div className="">Week {params.weeknumber}</div>
-      <div className="flex h-1/2 mb-5">
+      <div className="flex mb-5">
+        <PreviousButton
+          year={params.year}
+          display={params.weeknumber}
+          page={"week"}
+        />
+        <WeekHeader week={params.weeknumber} />
+        <NextButton
+          year={params.year}
+          display={params.weeknumber}
+          page={"week"}
+        />
+      </div>
+      <div className="flex h-[325px] mb-5">
         <Todos />
         <Tracking startOfWeek={startOfWeek} weekArray={weekArray} />
       </div>

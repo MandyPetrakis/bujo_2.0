@@ -1,7 +1,7 @@
 export default async function Routines() {
   return (
     <>
-      <div className="border h-48 p-5 text-sm min-w-fit mb-5">
+      <div className="border h-48 p-5 text-sm min-w-fit mb-5 overflow-scroll">
         <div className="flex justify-center  place-content-center mb-5 font-semibold">
           Morning Routine
         </div>
@@ -11,8 +11,8 @@ export default async function Routines() {
         <p>4. Walk Fred </p>
         <p>5. Meditate </p>
       </div>
-      <div className="border h-48 p-5 text-sm min-w-fit">
-        <div className="flex justify-center  place-content-center mb-5 font-semibold">
+      <div className="border h-48 p-5 text-sm min-w-fit overflow-scroll">
+        <div className="flex justify-center place-content-center mb-5 font-semibold">
           Evening Routine
         </div>
         <p>1. Wash Face </p>

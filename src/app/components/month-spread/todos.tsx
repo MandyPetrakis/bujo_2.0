@@ -13,7 +13,7 @@ export default async function Todos() {
   });
 
   return (
-    <div className="p-5 pb-10 text-sm border min-w-fit w-1/3 h-full">
+    <div className="p-5 pb-10 text-sm border min-w-fit max-w-[280px] w-1/3 h-full">
       <div className="flex place-content-center font-semibold pb-5">
         To Do List
       </div>

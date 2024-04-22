@@ -60,7 +60,7 @@ export default async function SleepTracker(props: {
     </p>
   ));
   return (
-    <div className="py-5">
+    <div className="pt-5">
       <p className="flex place-content-center text-sm font-semibold mb-5">
         Sleep
       </p>

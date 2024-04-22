@@ -5,9 +5,10 @@ import Habits from "./habits";
 export default function Calendar(props: { year: number; month: number }) {
   // creates an array with the length of the days in the currently viewed month.
   // maps through the array to add the events on that day.
+  const today = new Date();
 
   const calendar = createMonthArray(props.year, props.month).map((day) => {
-    return <Day params={{ day }} key={day.day} />;
+    return <Day day={day} key={day.day} today={today} />;
   });
 
   return (

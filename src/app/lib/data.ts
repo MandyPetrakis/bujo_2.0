@@ -53,11 +53,11 @@ export function getDayOfWeek(year: number, month: number, day: number) {
 export function createMonthArray(year: number, month: number) {
   const length = getDaysInMonth(year, month);
   return Array.from({ length }, (_, index) => {
-    const date = new Date(`${year}-${month}-${index + 1}`).toDateString();
+    const date = new Date(`${year}-${month}-${index + 1}`);
     return {
       day: index + 1,
       dayOfWeek: getDayOfWeek(year, month, index + 1),
-      date: addDays(date, index),
+      date: date,
     };
   });
 }
@@ -124,8 +124,6 @@ export function createWeekArray(startDate: Date) {
 // }
 
 export async function fetchEventsByDay(date: string) {
-  //   noStore();
-
   try {
     const data = await sql<EventsDisplay>`
       SELECT
