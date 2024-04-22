@@ -100,9 +100,76 @@ const habits = [
   },
 ];
 
+const sleep = [
+  {
+    id: "3948dc0e-787f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-01",
+    bed_time: "23",
+    wake_up_time: "7.5",
+  },
+  {
+    id: "3949dc0e-787f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-02",
+    bed_time: "22",
+    wake_up_time: "8",
+  },
+  {
+    id: "3748dc0e-787f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-03",
+    bed_time: "23",
+    wake_up_time: "9",
+  },
+  {
+    id: "3948dc0e-789f-4377-95e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-04",
+    bed_time: "21",
+    wake_up_time: "6",
+  },
+  {
+    id: "3948dc0e-779f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-05",
+    bed_time: "21",
+    wake_up_time: "6",
+  },
+];
+
+const hydration = [
+  {
+    id: "3948dc0e-779f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-01",
+    units: 9,
+  },
+  {
+    id: "3949dc0e-779f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-02",
+    units: 7,
+  },
+  {
+    id: "3947dc0e-779f-4377-85e9-fec4b6a6442a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-03",
+    units: 9,
+  },
+  {
+    id: "3948dc0e-779f-4377-85e9-fec4b6a6542a",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    date: "2024-4-04",
+    units: 10,
+  },
+];
+
 module.exports = {
   users,
   todos,
   events,
   habits,
+  sleep,
+  hydration,
 };

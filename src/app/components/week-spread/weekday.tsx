@@ -24,7 +24,7 @@ export default async function WeekDay(props: {
         <p className="mr-2">{props.month}</p>
         <p>{props.day}</p>
       </div>
-      <div className="text-sm">{eventsDisplay}</div>
+      <div className="text-xs">{eventsDisplay}</div>
     </div>
   );
 }

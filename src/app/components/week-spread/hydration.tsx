@@ -11,7 +11,7 @@ export default async function Hydration(props: {
     const length = 10;
     const cups = Array.from({ length }, (_, index) => {
       return (
-        <div className="h-[24px] place-content-center flex">
+        <div key={index} className="h-[24px] place-content-center flex">
           <div
             key={index}
             className={clsx("h-3 w-5", {

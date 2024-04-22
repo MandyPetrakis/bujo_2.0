@@ -4,6 +4,8 @@ const {
   todos,
   events,
   habits,
+  sleep,
+  hydration,
 } = require("../src/app/lib/placeholder-data.js");
 const bcrypt = require("bcrypt");
 
@@ -165,6 +167,81 @@ async function seedHabits(client) {
   }
 }
 
+async function seedSleep(client) {
+  try {
+    // Create the "sleep" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS sleep (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        user_id UUID NOT NULL,
+        date Date NOT NULL,
+        bed_time TEXT,
+        wake_up_time TEXT
+      );
+    `;
+
+    console.log(`Created "sleep" table`);
+
+    // Insert data into the "sleep" table
+    const insertedSleep = await Promise.all(
+      sleep.map(
+        (sleep) => client.sql`
+        INSERT INTO sleep (id, user_id, date, bed_time, wake_up_time)
+        VALUES (${sleep.id}, ${sleep.user_id}, ${sleep.date}, ${sleep.bed_time}, ${sleep.wake_up_time})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(`Seeded ${insertedSleep.length} sleeps`);
+
+    return {
+      createTable,
+      sleep: insertedSleep,
+    };
+  } catch (error) {
+    console.error("Error seeding sleep:", error);
+    throw error;
+  }
+}
+
+async function seedHydration(client) {
+  try {
+    // Create the "hydration" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS hydration (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        user_id UUID NOT NULL,
+        date Date NOT NULL,
+        units TEXT
+      );
+    `;
+
+    console.log(`Created "hydration" table`);
+
+    // Insert data into the "sleep" table
+    const insertedHydration = await Promise.all(
+      hydration.map(
+        (hydration) => client.sql`
+        INSERT INTO hydration (id, user_id, date, units)
+        VALUES (${hydration.id}, ${hydration.user_id}, ${hydration.date}, ${hydration.units})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(`Seeded ${insertedHydration.length} hydrations`);
+
+    return {
+      createTable,
+      hydration: insertedHydration,
+    };
+  } catch (error) {
+    console.error("Error seeding hydration:", error);
+    throw error;
+  }
+}
+
 async function main() {
   const client = await db.connect();
 
@@ -172,6 +249,8 @@ async function main() {
   await seedTodos(client);
   await seedEvents(client);
   await seedHabits(client);
+  await seedSleep(client);
+  await seedHydration(client);
 
   await client.end();
 }

@@ -22,3 +22,11 @@ export type TodoDisplay = {
   due_date: string;
   completed_date: string;
 };
+
+export type SleepDisplay = {
+  id: string;
+  user_id: string;
+  date: Date;
+  bed_time: string;
+  wake_up_time: string;
+};

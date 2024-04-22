@@ -1,5 +1,10 @@
 import { sql } from "@vercel/postgres";
-import { EventsDisplay, HabitsDisplay, TodoDisplay } from "./definitions";
+import {
+  EventsDisplay,
+  HabitsDisplay,
+  SleepDisplay,
+  TodoDisplay,
+} from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 //date helper funcions
 
@@ -146,8 +151,6 @@ export async function fetchEventsByDay(date: string) {
 //fetch habits
 
 export async function fetchActiveHabits(year: number, month: number) {
-  const daysInMonth: number = getDaysInMonth(year, month);
-  // const date = `${year}-${month}-${daysInMonth}`;
   try {
     const data = await sql<HabitsDisplay>`
       SELECT
@@ -184,6 +187,28 @@ export async function fetchIncompleteToDos() {
     const todos = data.rows;
 
     return todos;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+//fetch sleep
+export async function fetchSleepByDay(date: string) {
+  try {
+    const data = await sql<SleepDisplay>`
+      SELECT
+        sleep.id,
+        sleep.date,
+        sleep.bed_time,
+        sleep.wake_up_time
+      FROM sleep
+        WHERE sleep.date = ${date}
+    `;
+
+    const sleepData = data.rows;
+
+    return sleepData;
   } catch (error) {
     console.error("Database Error:", error);
     return [];
