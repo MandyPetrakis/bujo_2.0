@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import HydrationDay from "./hydrationDay";
 
 export default async function Hydration(props: {
@@ -6,7 +5,7 @@ export default async function Hydration(props: {
   weekArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
   const hydrationDisplay = props.weekArray.map((day, index) => {
-    return <HydrationDay day={day} />;
+    return <HydrationDay day={day} key={index} />;
   });
 
   const length = 10;
