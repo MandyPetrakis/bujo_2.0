@@ -7,7 +7,7 @@ export default async function SleepDay(props: {
   length: number;
   startTime: number;
 }) {
-  revalidatePath("layout");
+  revalidatePath("page");
   const startTime = props.startTime;
   const sleepData = await fetchSleepByDay(props.day.date.toDateString());
   const length = props.length;
@@ -26,7 +26,7 @@ export default async function SleepDay(props: {
       bed_time = parseInt(sleepData[0].bed_time);
       wake_up_time = parseInt(sleepData[0].wake_up_time) - 1;
     }
-    console.log(sleepData);
+
     return (
       <div key={index} className="h-[24px] place-content-center flex">
         <div

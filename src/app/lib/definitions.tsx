@@ -30,3 +30,10 @@ export type SleepDisplay = {
   bed_time: string;
   wake_up_time: string;
 };
+
+export type HydrationDisplay = {
+  id: string;
+  user_id: string;
+  date: Date;
+  units: number;
+};

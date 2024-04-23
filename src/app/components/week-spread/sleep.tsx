@@ -9,7 +9,9 @@ export default async function SleepTracker(props: {
   const startTime = userSleepSettings.startTime;
 
   const sleepDisplay = props.weekArray.map((day) => {
-    return <SleepDay day={day} length={length} startTime={startTime} />;
+    return (
+      <SleepDay day={day} length={length} startTime={startTime} key={day.day} />
+    );
   });
 
   const hoursDispaly = Array.from({ length }, (_, index) => {

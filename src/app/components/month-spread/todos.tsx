@@ -1,12 +1,14 @@
 import { fetchIncompleteToDos } from "@/app/lib/data";
+import { revalidatePath } from "next/cache";
 
 export default async function Todos() {
+  revalidatePath("page");
   const todoList = await fetchIncompleteToDos();
 
   const todoRender = todoList.map((todo) => {
     return (
       <div key={todo.id} className="flex whitespace-nowrap">
-        <div className="w-5 flex-none h-5 border mr-1 "></div>
+        <div className="w-5 flex-none h-5 border mr-1 mb-2 "></div>
         {todo.description}
       </div>
     );

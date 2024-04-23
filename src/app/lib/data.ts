@@ -4,6 +4,7 @@ import {
   HabitsDisplay,
   SleepDisplay,
   TodoDisplay,
+  HydrationDisplay,
 } from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 //date helper funcions
@@ -209,6 +210,28 @@ export async function fetchSleepByDay(date: string) {
     const sleepData = data.rows;
 
     return sleepData;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+// fetch hydration
+
+export async function fetchHydrationByDay(date: string) {
+  try {
+    const data = await sql<HydrationDisplay>`
+      SELECT
+        hydration.id,
+        hydration.date,
+        hydration.units
+      FROM hydration
+        WHERE hydration.date = ${date}
+    `;
+
+    const hydrationData = data.rows;
+
+    return hydrationData;
   } catch (error) {
     console.error("Database Error:", error);
     return [];
