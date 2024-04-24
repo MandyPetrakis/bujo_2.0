@@ -1,9 +1,8 @@
 import { fetchActiveHabits } from "@/app/lib/data";
-import { daysToWeeks } from "date-fns";
 
 export default async function Habits(props: {
   startOfWeek: Date;
-  weekArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
+  datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
   const month = props.startOfWeek.getMonth();
   const year = props.startOfWeek.getFullYear();
@@ -11,7 +10,7 @@ export default async function Habits(props: {
   const habits = await fetchActiveHabits(year, month + 1);
 
   const habitRender = habits.map((habit) => {
-    const week = props.weekArray.map((day) => {
+    const week = props.datesArray.map((day) => {
       //convert dates_completed and day.date to string for comparison
       const completedString = habit.dates_completed.map((date) =>
         date.toString()

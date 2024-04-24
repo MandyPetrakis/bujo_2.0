@@ -1,20 +1,24 @@
 import SleepDay from "./sleepDay";
 
 export default async function SleepTracker(props: {
-  startOfWeek: Date;
-  weekArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
+  datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
   const userSleepSettings = { startTime: 21, length: 13 };
   const length = userSleepSettings.length;
   const startTime = userSleepSettings.startTime;
 
-  const sleepDisplay = props.weekArray.map((day) => {
+  const sleepDisplay = props.datesArray.map((day) => {
     return (
-      <SleepDay day={day} length={length} startTime={startTime} key={day.day} />
+      <SleepDay
+        date={day.date}
+        length={length}
+        startTime={startTime}
+        key={day.day}
+      />
     );
   });
 
-  const hoursDispaly = Array.from({ length }, (_, index) => {
+  const hoursHeader = Array.from({ length }, (_, index) => {
     let hour;
 
     if (startTime + index > 24) {
@@ -29,11 +33,11 @@ export default async function SleepTracker(props: {
   });
 
   return (
-    <div className="pt-5">
+    <div className="pt-5 pl-5">
       <p className="flex place-content-center text-sm font-semibold mb-5">
         Sleep
       </p>
-      <div className="flex pl-8 mb-2">{hoursDispaly}</div>
+      <div className="flex pl-8 mb-2">{hoursHeader}</div>
       {sleepDisplay}
     </div>
   );

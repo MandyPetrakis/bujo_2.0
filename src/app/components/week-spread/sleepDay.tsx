@@ -3,13 +3,13 @@ import { fetchSleepByDay } from "@/app/lib/data";
 import { revalidatePath } from "next/cache";
 
 export default async function SleepDay(props: {
-  day: { dayOfWeek: string; day: number; month: string; date: Date };
+  date: Date;
   length: number;
   startTime: number;
 }) {
   revalidatePath("page");
   const startTime = props.startTime;
-  const sleepData = await fetchSleepByDay(props.day.date.toDateString());
+  const sleepData = await fetchSleepByDay(props.date.toDateString());
   const length = props.length;
 
   const hours = Array.from({ length }, (_, index) => {
@@ -28,21 +28,22 @@ export default async function SleepDay(props: {
     }
 
     return (
-      <div key={index} className="h-[24px] place-content-center flex">
-        <div
-          key={props.startTime + index}
-          className={clsx("h-3 w-5", {
-            "bg-dark":
-              (bed_time <= hour && hour > 20 && bed_time != 0) ||
-              (wake_up_time >= hour && hour < 21 && wake_up_time != 0),
-          })}
-        ></div>
-      </div>
+      <div
+        key={props.startTime + index}
+        className={clsx("h-[12px] w-5", {
+          "bg-dark":
+            (bed_time <= hour && hour > 20 && bed_time != 0) ||
+            (wake_up_time >= hour && hour < 21 && wake_up_time != 0),
+        })}
+      ></div>
     );
   });
 
   return (
-    <div key={props.day.day} className="flex items-center pl-10">
+    <div
+      key={props.date.toDateString()}
+      className="flex  pl-10 h-[24px] place-content-center"
+    >
       {hours}
       <p className="flex place-content-center text-sm h-[24px] "></p>
     </div>

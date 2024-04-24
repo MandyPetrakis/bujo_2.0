@@ -4,8 +4,13 @@ const {
   todos,
   events,
   habits,
-  sleep,
-  hydration,
+  configs,
+  daily_trackings,
+  daily_tracking_habits,
+  config_habits,
+  annual_goals,
+  month_goals,
+  week_goals,
 } = require("../src/app/lib/placeholder-data.js");
 const bcrypt = require("bcrypt");
 
@@ -16,7 +21,6 @@ async function seedUsers(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL
       );
@@ -29,8 +33,8 @@ async function seedUsers(client) {
       users.map(async (user) => {
         const hashedPassword = await bcrypt.hash(user.password, 10);
         return client.sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
+        INSERT INTO users (id, email, password)
+        VALUES (${user.id}, ${user.email}, ${hashedPassword})
         ON CONFLICT (id) DO NOTHING;
       `;
       })
@@ -60,7 +64,7 @@ async function seedTodos(client) {
     description TEXT NOT NULL,
     complete BOOLEAN NOT NULL,
     due_date DATE,
-    completed_date DATE 
+    completed_date DATE
   );
 `;
 
@@ -135,10 +139,7 @@ async function seedHabits(client) {
       CREATE TABLE IF NOT EXISTS habits (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         description TEXT NOT NULL,
-        user_id UUID NOT NULL,
-        active_month DATE NOT NULL, 
-        active BOOLEAN NOT NULL, 
-        dates_completed DATE[] NOT NULL
+        user_id UUID NOT NULL
       );
     `;
 
@@ -148,8 +149,8 @@ async function seedHabits(client) {
     const insertedHabits = await Promise.all(
       habits.map(
         (habit) => client.sql`
-        INSERT INTO habits (id, description, user_id, active, active_month, dates_completed)
-        VALUES (${habit.id}, ${habit.description}, ${habit.user_id}, ${habit.active}, ${habit.active_month}, ${habit.dates_completed})
+        INSERT INTO habits (id, description, user_id)
+        VALUES (${habit.id}, ${habit.description}, ${habit.user_id})
         ON CONFLICT (id) DO NOTHING;
       `
       )
@@ -167,77 +168,269 @@ async function seedHabits(client) {
   }
 }
 
-async function seedSleep(client) {
+async function seedConfigs(client) {
   try {
-    // Create the "sleep" table if it doesn't exist
+    // Create the "month_config" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS sleep (
+      CREATE TABLE IF NOT EXISTS configs (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID NOT NULL,
-        date Date NOT NULL,
-        bed_time TEXT,
-        wake_up_time TEXT
+        start_date TEXT NOT NULL,
+        hydration_type TEXT NOT NULL,
+        hydration_goal TEXT NOT NULL,
+        bedtime_goal TEXT NOT NULL,
+        waketime_goal TEXT NOT NULL
       );
     `;
 
-    console.log(`Created "sleep" table`);
+    console.log(`Created "configs" table`);
 
-    // Insert data into the "sleep" table
-    const insertedSleep = await Promise.all(
-      sleep.map(
-        (sleep) => client.sql`
-        INSERT INTO sleep (id, user_id, date, bed_time, wake_up_time)
-        VALUES (${sleep.id}, ${sleep.user_id}, ${sleep.date}, ${sleep.bed_time}, ${sleep.wake_up_time})
+    // Insert data into the "config" table
+    const insertedConfigs = await Promise.all(
+      configs.map(
+        (config) => client.sql`
+        INSERT INTO configs (id, user_id, start_date, hydration_type, hydration_goal, bedtime_goal, waketime_goal)
+        VALUES (${config.id}, ${config.user_id}, ${config.start_date}, ${config.hydration_type}, ${config.hydration_goal},  ${config.bedtime_goal}, ${config.waketime_goal})
         ON CONFLICT (id) DO NOTHING;
       `
       )
     );
 
-    console.log(`Seeded ${insertedSleep.length} sleeps`);
+    console.log(`Seeded ${insertedConfigs.length} configs`);
 
     return {
       createTable,
-      sleep: insertedSleep,
+      configs: insertedConfigs,
     };
   } catch (error) {
-    console.error("Error seeding sleep:", error);
+    console.error("Error seeding configs:", error);
     throw error;
   }
 }
 
-async function seedHydration(client) {
+async function seedDailyTrackings(client) {
   try {
-    // Create the "hydration" table if it doesn't exist
+    // Create the "daily trackings" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS hydration (
+      CREATE TABLE IF NOT EXISTS daily_trackings (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID NOT NULL,
-        date Date NOT NULL,
-        units TEXT
+        date TEXT NOT NULL,
+        hydration TEXT NOT NULL,
+        bedtime TEXT NOT NULL,
+        waketime TEXT NOT NULL
       );
     `;
 
-    console.log(`Created "hydration" table`);
+    console.log(`Created "daily_trackings" table`);
 
-    // Insert data into the "sleep" table
-    const insertedHydration = await Promise.all(
-      hydration.map(
-        (hydration) => client.sql`
-        INSERT INTO hydration (id, user_id, date, units)
-        VALUES (${hydration.id}, ${hydration.user_id}, ${hydration.date}, ${hydration.units})
+    // Insert data into the "daily_trackings" table
+    const insertedDailyTrackings = await Promise.all(
+      daily_trackings.map(
+        (daily_tracking) => client.sql`
+        INSERT INTO daily_trackings (id, user_id, date, hydration, bedtime, waketime)
+        VALUES (${daily_tracking.id}, ${daily_tracking.user_id}, ${daily_tracking.date}, ${daily_tracking.hydration},  ${daily_tracking.bedtime}, ${daily_tracking.waketime})
         ON CONFLICT (id) DO NOTHING;
       `
       )
     );
 
-    console.log(`Seeded ${insertedHydration.length} hydrations`);
+    console.log(`Seeded ${insertedDailyTrackings.length} daily_trackings`);
 
     return {
       createTable,
-      hydration: insertedHydration,
+      daily_trackings: insertedDailyTrackings,
     };
   } catch (error) {
-    console.error("Error seeding hydration:", error);
+    console.error("Error seeding daily_trackings:", error);
+    throw error;
+  }
+}
+
+async function seedDailyTrackingHabits(client) {
+  try {
+    // Create the "daily trackings habits" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS daily_tracking_habits (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        habit_id UUID NOT NULL,
+        daily_tracking_id UUID NOT NULL,
+        completed BOOLEAN NOT NULL
+      );
+    `;
+
+    console.log(`Created "daily_tracking_habits" table`);
+
+    // Insert data into the "daily_trackings_habits" table
+    const insertedDailyTrackingsHabits = await Promise.all(
+      daily_tracking_habits.map(
+        (daily_tracking_habit) => client.sql`
+        INSERT INTO daily_tracking_habits (id, habit_id, daily_tracking_id, completed)
+        VALUES (${daily_tracking_habit.id}, ${daily_tracking_habit.habit_id}, ${daily_tracking_habit.daily_tracking_id}, ${daily_tracking_habit.completed})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(
+      `Seeded ${insertedDailyTrackingsHabits.length} daily_tracking_habits`
+    );
+
+    return {
+      createTable,
+      daily_tracking_habits: insertedDailyTrackingsHabits,
+    };
+  } catch (error) {
+    console.error("Error seeding daily_tracking_habits:", error);
+    throw error;
+  }
+}
+
+async function seedConfigHabits(client) {
+  try {
+    // Create the "config habits" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS config_habits (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        habit_id UUID NOT NULL,
+        config_id UUID NOT NULL
+      );
+    `;
+
+    console.log(`Created "config_habits" table`);
+
+    // Insert data into the "config_habits" table
+    const insertedConfigHabits = await Promise.all(
+      config_habits.map(
+        (config_habit) => client.sql`
+        INSERT INTO config_habits (id, habit_id, config_id)
+        VALUES (${config_habit.id}, ${config_habit.habit_id}, ${config_habit.config_id})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(`Seeded ${insertedConfigHabits.length} config_habits`);
+
+    return {
+      createTable,
+      confid_habits: insertedConfigHabits,
+    };
+  } catch (error) {
+    console.error("Error seeding config_habits:", error);
+    throw error;
+  }
+}
+
+async function seedAnnualGoals(client) {
+  try {
+    // Create the "annual goals" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS annual_goals (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        user_id UUID NOT NULL,
+        year TEXT NOT NULL,
+        description TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "annual_goals" table`);
+
+    // Insert data into the "annual_goals" table
+    const insertedAnnualGoals = await Promise.all(
+      annual_goals.map(
+        (annual_goal) => client.sql`
+        INSERT INTO annual_goals (id, user_id, year, description)
+        VALUES (${annual_goal.id}, ${annual_goal.user_id}, ${annual_goal.year}, ${annual_goal.description})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(`Seeded ${insertedAnnualGoals.length} annual_goals`);
+
+    return {
+      createTable,
+      annual_goals: insertedAnnualGoals,
+    };
+  } catch (error) {
+    console.error("Error seeding annual_goals:", error);
+    throw error;
+  }
+}
+
+async function seedMonthGoals(client) {
+  try {
+    // Create the "month goals" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS month_goals (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        user_id UUID NOT NULL,
+        year TEXT NOT NULL,
+        month TEXT NOT NULL,
+        description TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "month_goals" table`);
+
+    // Insert data into the "month_goals" table
+    const insertedMonthGoals = await Promise.all(
+      month_goals.map(
+        (month_goal) => client.sql`
+        INSERT INTO month_goals (id, user_id, year, month, description)
+        VALUES (${month_goal.id}, ${month_goal.user_id}, ${month_goal.year}, ${month_goal.month}, ${month_goal.description})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(`Seeded ${insertedMonthGoals.length} month_goals`);
+
+    return {
+      createTable,
+      month_goals: insertedMonthGoals,
+    };
+  } catch (error) {
+    console.error("Error seeding month_goals:", error);
+    throw error;
+  }
+}
+
+async function seedWeekGoals(client) {
+  try {
+    // Create the "week goals" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS week_goals (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        user_id UUID NOT NULL,
+        year TEXT NOT NULL,
+        week TEXT NOT NULL,
+        description TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "week_goals" table`);
+
+    // Insert data into the "week_goals" table
+    const insertedWeekGoals = await Promise.all(
+      week_goals.map(
+        (week_goal) => client.sql`
+        INSERT INTO week_goals (id, user_id, year, week, description)
+        VALUES (${week_goal.id}, ${week_goal.user_id}, ${week_goal.year}, ${week_goal.week}, ${week_goal.description})
+        ON CONFLICT (id) DO NOTHING;
+      `
+      )
+    );
+
+    console.log(`Seeded ${insertedWeekGoals.length} week_goals`);
+
+    return {
+      createTable,
+      week_goals: insertedWeekGoals,
+    };
+  } catch (error) {
+    console.error("Error seeding week_goals:", error);
     throw error;
   }
 }
@@ -249,8 +442,13 @@ async function main() {
   await seedTodos(client);
   await seedEvents(client);
   await seedHabits(client);
-  await seedSleep(client);
-  await seedHydration(client);
+  await seedConfigs(client);
+  await seedDailyTrackings(client);
+  await seedDailyTrackingHabits(client);
+  await seedConfigHabits(client);
+  await seedAnnualGoals(client);
+  await seedMonthGoals(client);
+  await seedWeekGoals(client);
 
   await client.end();
 }

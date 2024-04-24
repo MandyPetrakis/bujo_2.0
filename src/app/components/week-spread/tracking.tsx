@@ -1,6 +1,6 @@
-import SleepTracker from "./sleep";
+import SleepTracker from "./sleepTracker";
 import Habits from "./habits";
-import Hydration from "./hydration";
+import HydrationTracker from "./hydrationTracker";
 
 export default async function Tracking(props: {
   startOfWeek: Date;
@@ -17,21 +17,15 @@ export default async function Tracking(props: {
     );
   });
   return (
-    <div className="border pt-5 px-5 ml-5 overflow-scroll">
+    <div className="border p-5 ml-5 overflow-scroll">
       <p className="flex place-content-center text-sm font-semibold mb-2">
         Tracking
       </p>
       <div className="flex">
-        <div className="pt-[85px]">{daysOfWeek}</div>
-        <Habits startOfWeek={props.startOfWeek} weekArray={props.weekArray} />
-        <SleepTracker
-          startOfWeek={props.startOfWeek}
-          weekArray={props.weekArray}
-        />
-        <Hydration
-          startOfWeek={props.startOfWeek}
-          weekArray={props.weekArray}
-        />
+        <div className="pt-[85px] h-[24px]">{daysOfWeek}</div>
+        <Habits startOfWeek={props.startOfWeek} datesArray={props.weekArray} />
+        <SleepTracker datesArray={props.weekArray} />
+        <HydrationTracker datesArray={props.weekArray} />
       </div>
     </div>
   );
