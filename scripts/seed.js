@@ -215,7 +215,7 @@ async function seedDailyTrackings(client) {
       CREATE TABLE IF NOT EXISTS daily_trackings (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID NOT NULL,
-        date TEXT NOT NULL,
+        date DATE NOT NULL,
         hydration TEXT NOT NULL,
         bedtime TEXT NOT NULL,
         waketime TEXT NOT NULL

@@ -1,5 +1,4 @@
 import { sql, createPool } from "@vercel/postgres";
-import { v4 as uuidv4, validate } from "uuid";
 
 import {
   EventsDisplay,
@@ -13,22 +12,12 @@ import {
 } from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 
-// function stringToUUID(string: string) {
-//   if (validate(string)) {
-//     return string; // Already a valid UUID, no conversion needed
-//   } else {
-//     // Generate UUID based on the string
-//     const uuid = uuidv4(string);
-//     return uuid;
-//   }
-// }
-
 //date helper funcions
 
-const pool = createPool({
-  connectionString:
-    "postgres://default:AcKPLl4j9Efd@ep-restless-lab-a4ov31n9-pooler.us-east-1.aws.neon.tech:5432/verceldb",
-});
+// const pool = createPool({
+//   connectionString:
+//     "postgres://default:AcKPLl4j9Efd@ep-restless-lab-a4ov31n9-pooler.us-east-1.aws.neon.tech:5432/verceldb",
+// });
 
 export function getDate() {
   const today = new Date();
@@ -125,31 +114,6 @@ export function createWeekArray(startDate: Date) {
 }
 // fetch events
 
-// export async function fetchEventsByMonth(year: number, month: number) {
-//   //   noStore();
-
-//   const daysInMonth: number = new Date(year, month, 0).getDate();
-//   const start = `${year}-${month}-01`;
-//   const end = `${year}-${month}-${daysInMonth}`;
-
-//   try {
-//     const data = await sql<EventsDisplay>`
-//       SELECT
-//         events.id,
-//         events.description,
-//         events.date
-//       FROM events
-//       WHERE events.date BETWEEN ${start} AND ${end};
-//     `;
-//     const events = data.rows;
-
-//     return events;
-//   } catch (error) {
-//     console.error("Database Error:", error);
-//     throw new Error("Failed to fetch events.");
-//   }
-// }
-
 export async function fetchEventsByDay(date: string) {
   try {
     const data = await sql<EventsDisplay>`
@@ -164,28 +128,6 @@ export async function fetchEventsByDay(date: string) {
     const events = data.rows;
 
     return events;
-  } catch (error) {
-    console.error("Database Error:", error);
-    return [];
-  }
-}
-
-//fetch current configs
-
-export async function fetchConfigsByDay(date: string) {
-  try {
-    const data = await sql<Configs>`
-    SELECT *
-    FROM configs 
-    WHERE start_date = (
-      SELECT MAX(start_date)
-      FROM configs 
-      WHERE start_date < ${date}
-    )
-    `;
-
-    const configs = data.rows;
-    return configs;
   } catch (error) {
     console.error("Database Error:", error);
     return [];
@@ -266,16 +208,40 @@ export async function fetchIncompleteToDos() {
 }
 
 //fetch sleep
+
+export async function fetchSleepConfigsByDate(date: string) {
+  try {
+    const data = await sql<Configs>`
+      SELECT 
+          bedtime_goal,
+          waketime_goal,
+          start_date
+      FROM 
+          configs 
+      WHERE 
+          start_date = (
+              SELECT MAX(start_date)
+              FROM configs 
+              WHERE start_date < ${date}
+          )
+    `;
+
+    const configs = data.rows;
+    return configs;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
 export async function fetchSleepByDay(date: string) {
   try {
     const data = await sql<SleepDisplay>`
       SELECT
-        sleep.id,
-        sleep.date,
-        sleep.bed_time,
-        sleep.wake_up_time
-      FROM sleep
-        WHERE sleep.date = ${date}
+        daily_trackings.id,
+        daily_trackings.bedtime,
+        daily_trackings.waketime
+      FROM daily_trackings
+        WHERE daily_trackings.date = ${date}
     `;
 
     const sleepData = data.rows;

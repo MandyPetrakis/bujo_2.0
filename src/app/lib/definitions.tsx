@@ -28,7 +28,7 @@ export type ConfigHabits = {
 export type Configs = {
   id: string;
   user_id: string;
-  start_date: string;
+  start_date: Date;
   hydration_type: string;
   hydration_goal: string;
   bedtime_goal: string;
@@ -46,10 +46,8 @@ export type TodoDisplay = {
 
 export type SleepDisplay = {
   id: string;
-  user_id: string;
-  date: Date;
-  bed_time: string;
-  wake_up_time: string;
+  bedtime: string;
+  waketime: string;
 };
 
 export type HydrationDisplay = {

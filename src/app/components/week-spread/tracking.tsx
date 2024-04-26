@@ -17,15 +17,15 @@ export default async function Tracking(props: {
     );
   });
   return (
-    <div className="border p-5 ml-5 overflow-scroll">
+    <div className="border p-5 ml-5 overflow-scroll w-full">
       <p className="flex place-content-center text-sm font-semibold mb-2">
         Tracking
       </p>
       <div className="flex">
         <div className="pt-[85px] h-[24px]">{daysOfWeek}</div>
         <HabitTracker datesArray={props.weekArray} />
-        {/* <SleepTracker datesArray={props.weekArray} />
-        <HydrationTracker datesArray={props.weekArray} /> */}
+        <SleepTracker datesArray={props.weekArray} />
+        {/* <HydrationTracker datesArray={props.weekArray} /> */}
       </div>
     </div>
   );

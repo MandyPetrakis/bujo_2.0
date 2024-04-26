@@ -32,7 +32,7 @@ export default function WeekSpread({
           page={"week"}
         />
       </div>
-      <div className="flex h-[325px] mb-5">
+      <div className="flex h-[325px] mb-5 w-full">
         <Todos />
         <Tracking startOfWeek={startOfWeek} weekArray={weekArray} />
       </div>

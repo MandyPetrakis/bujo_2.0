@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { fetchSleepByDay } from "@/app/lib/data";
+import { fetchSleepByDay, fetchSleepConfigsByDate } from "@/app/lib/data";
 import { revalidatePath } from "next/cache";
 
 export default async function SleepDay(props: {
@@ -8,8 +8,12 @@ export default async function SleepDay(props: {
   startTime: number;
 }) {
   revalidatePath("page");
+  const sleepConfigs = await fetchSleepConfigsByDate(props.date.toDateString());
+  const sleepData = await fetchSleepByDay(props.date.toDateString());
+
+  console.log(sleepConfigs);
+
   const startTime = props.startTime;
-  const sleepData = [];
   const length = props.length;
 
   const hours = Array.from({ length }, (_, index) => {
@@ -22,20 +26,29 @@ export default async function SleepDay(props: {
     let bed_time = 0;
     let wake_up_time = 0;
 
-    if (sleepData.length != 0) {
-      bed_time = parseInt(sleepData[0].bed_time);
-      wake_up_time = parseInt(sleepData[0].wake_up_time) - 1;
+    if (sleepData.length !== 0) {
+      (bed_time = parseInt(sleepData[0].bedtime)),
+        (wake_up_time = parseInt(sleepData[0].waketime));
     }
 
     return (
       <div
-        key={props.startTime + index}
-        className={clsx("h-[12px] w-5", {
-          "bg-dark":
-            (bed_time <= hour && hour > 20 && bed_time != 0) ||
-            (wake_up_time >= hour && hour < 21 && wake_up_time != 0),
+        className={clsx({
+          "border-l border-medium":
+            hour == parseInt(sleepConfigs[0].bedtime_goal),
+          "border-r border-medium":
+            hour == parseInt(sleepConfigs[0].waketime_goal),
         })}
-      ></div>
+      >
+        <div
+          key={props.startTime + index}
+          className={clsx("h-[12px] w-5", {
+            "bg-dark":
+              (bed_time <= hour && hour > 20 && bed_time != 0) ||
+              (wake_up_time >= hour && hour < 21 && wake_up_time != 0),
+          })}
+        ></div>
+      </div>
     );
   });
 

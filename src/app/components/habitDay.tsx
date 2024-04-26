@@ -12,7 +12,10 @@ export default async function HabitDay(props: {
   const completed = habitData[0].completed;
 
   return (
-    <div className="font-semibold h-[24px] w-[24px] flex place-content-center items-center">
+    <div
+      key={props.date.toDateString()}
+      className="font-semibold h-[24px] w-[24px] flex place-content-center items-center"
+    >
       {completed ? "X" : null}
     </div>
   );
