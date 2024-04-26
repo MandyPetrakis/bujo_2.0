@@ -6,7 +6,7 @@ const {
   habits,
   configs,
   daily_trackings,
-  daily_tracking_habits,
+  daily_habits,
   config_habits,
   annual_goals,
   month_goals,
@@ -175,7 +175,7 @@ async function seedConfigs(client) {
       CREATE TABLE IF NOT EXISTS configs (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID NOT NULL,
-        start_date TEXT NOT NULL,
+        start_date DATE NOT NULL,
         hydration_type TEXT NOT NULL,
         hydration_goal TEXT NOT NULL,
         bedtime_goal TEXT NOT NULL,
@@ -247,26 +247,26 @@ async function seedDailyTrackings(client) {
   }
 }
 
-async function seedDailyTrackingHabits(client) {
+async function seedDailyHabits(client) {
   try {
     // Create the "daily trackings habits" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS daily_tracking_habits (
+      CREATE TABLE IF NOT EXISTS daily_habits (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         habit_id UUID NOT NULL,
-        daily_tracking_id UUID NOT NULL,
+        date DATE NOT NULL,
         completed BOOLEAN NOT NULL
       );
     `;
 
-    console.log(`Created "daily_tracking_habits" table`);
+    console.log(`Created "daily_habits" table`);
 
     // Insert data into the "daily_trackings_habits" table
     const insertedDailyTrackingsHabits = await Promise.all(
-      daily_tracking_habits.map(
-        (daily_tracking_habit) => client.sql`
-        INSERT INTO daily_tracking_habits (id, habit_id, daily_tracking_id, completed)
-        VALUES (${daily_tracking_habit.id}, ${daily_tracking_habit.habit_id}, ${daily_tracking_habit.daily_tracking_id}, ${daily_tracking_habit.completed})
+      daily_habits.map(
+        (daily_habit) => client.sql`
+        INSERT INTO daily_habits (id, habit_id, date, completed)
+        VALUES (${daily_habit.id}, ${daily_habit.habit_id}, ${daily_habit.date}, ${daily_habit.completed})
         ON CONFLICT (id) DO NOTHING;
       `
       )
@@ -444,7 +444,7 @@ async function main() {
   await seedHabits(client);
   await seedConfigs(client);
   await seedDailyTrackings(client);
-  await seedDailyTrackingHabits(client);
+  await seedDailyHabits(client);
   await seedConfigHabits(client);
   await seedAnnualGoals(client);
   await seedMonthGoals(client);

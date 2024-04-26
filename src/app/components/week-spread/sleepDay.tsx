@@ -9,7 +9,7 @@ export default async function SleepDay(props: {
 }) {
   revalidatePath("page");
   const startTime = props.startTime;
-  const sleepData = await fetchSleepByDay(props.date.toDateString());
+  const sleepData = [];
   const length = props.length;
 
   const hours = Array.from({ length }, (_, index) => {

@@ -121,7 +121,7 @@ const configs = [
   {
     id: "3848dc0e-779f-4377-85e9-fec4b6a6542a",
     user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
-    start_date: "2024-2-01",
+    start_date: "2024-02-01",
     hydration_type: "oz",
     hydration_goal: "80",
     bedtime_goal: "21",
@@ -130,7 +130,7 @@ const configs = [
   {
     id: "3948dc0e-779f-4377-85e9-fec4b6a6542a",
     user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
-    start_date: "2024-4-01",
+    start_date: "2024-04-01",
     hydration_type: "oz",
     hydration_goal: "80",
     bedtime_goal: "22",
@@ -299,76 +299,76 @@ const daily_trackings = [
   },
 ];
 
-const daily_tracking_habits = [
+const daily_habits = [
   {
     id: "3948dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3848dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-25",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6442a",
     completed: true,
   },
   {
     id: "3848dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-24",
     habit_id: "3956dc0e-787f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
   {
     id: "3748dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3948dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-23",
     habit_id: "3958dc0e-987f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
   {
     id: "3648dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3942dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-22",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
   {
     id: "3548dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-21",
     habit_id: "3956dc0e-787f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
   {
     id: "3448dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-20",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
   {
     id: "3348dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3942dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-19",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6492a",
     completed: true,
   },
   {
     id: "3248dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-18",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6492a",
     completed: true,
   },
   {
     id: "3148dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-13",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6492a",
     completed: true,
   },
   {
     id: "2348dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3748dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-12",
     habit_id: "3956dc0e-787f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
   {
     id: "3838dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-11",
     habit_id: "3958dc0e-787f-4377-85e9-fec4b6a6442a",
     completed: true,
   },
   {
     id: "3858dc0e-779f-4377-85e9-fec4b6a6542a",
-    daily_tracking_id: "3943dc0e-779f-4377-85e9-fec4b6a6542a",
+    date: "2024-04-10",
     habit_id: "3956dc0e-787f-4377-85e9-fec4b6a6452a",
     completed: true,
   },
@@ -450,10 +450,9 @@ module.exports = {
   habits,
   configs,
   daily_trackings,
-  daily_tracking_habits,
+  daily_habits,
   config_habits,
   annual_goals,
   month_goals,
   week_goals,
 };
-π;

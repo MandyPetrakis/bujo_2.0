@@ -2,7 +2,7 @@ import { fetchHydrationByDay } from "@/app/lib/data";
 import clsx from "clsx";
 
 export default async function HydrationDay(props: { date: Date }) {
-  const hydrationData = await fetchHydrationByDay(props.date.toDateString());
+  const hydrationData = [];
 
   // length=  total units displayed in the tracker
   const length = 10;

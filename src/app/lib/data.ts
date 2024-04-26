@@ -1,13 +1,34 @@
-import { sql } from "@vercel/postgres";
+import { sql, createPool } from "@vercel/postgres";
+import { v4 as uuidv4, validate } from "uuid";
+
 import {
   EventsDisplay,
   HabitsDisplay,
   SleepDisplay,
   TodoDisplay,
   HydrationDisplay,
+  Configs,
+  ConfigHabits,
+  DailyHabitsData,
 } from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
+
+// function stringToUUID(string: string) {
+//   if (validate(string)) {
+//     return string; // Already a valid UUID, no conversion needed
+//   } else {
+//     // Generate UUID based on the string
+//     const uuid = uuidv4(string);
+//     return uuid;
+//   }
+// }
+
 //date helper funcions
+
+const pool = createPool({
+  connectionString:
+    "postgres://default:AcKPLl4j9Efd@ep-restless-lab-a4ov31n9-pooler.us-east-1.aws.neon.tech:5432/verceldb",
+});
 
 export function getDate() {
   const today = new Date();
@@ -149,22 +170,72 @@ export async function fetchEventsByDay(date: string) {
   }
 }
 
-//fetch habits
+//fetch current configs
 
-export async function fetchActiveHabits(year: number, month: number) {
+export async function fetchConfigsByDay(date: string) {
+  try {
+    const data = await sql<Configs>`
+    SELECT *
+    FROM configs 
+    WHERE start_date = (
+      SELECT MAX(start_date)
+      FROM configs 
+      WHERE start_date < ${date}
+    )
+    `;
+
+    const configs = data.rows;
+    return configs;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+export async function fetchHabitsByRange(start_date: string, end_date: string) {
   try {
     const data = await sql<HabitsDisplay>`
-      SELECT
-        habits.id,
-        habits.description,
-        habits.dates_completed
-      FROM habits
-        WHERE habits.active = true;
+      SELECT DISTINCT habits.*
+      FROM configs
+      JOIN config_habits ON configs.id = config_habits.config_id
+      JOIN habits ON config_habits.habit_id = habits.id
+      WHERE configs.start_date <= ${end_date} AND configs.start_date >= (
+          SELECT MAX(start_date)
+          FROM configs 
+          WHERE start_date < ${start_date}
+      )
+      UNION
+      SELECT DISTINCT habits.*
+      FROM configs
+      JOIN config_habits ON configs.id = config_habits.config_id
+      JOIN habits ON config_habits.habit_id = habits.id
+      WHERE configs.start_date < ${end_date} AND configs.start_date > ${start_date};
     `;
 
     const habits = data.rows;
-
     return habits;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+export async function fetchDailyHabitsByDayandId(
+  date: string,
+  habit_id: string
+) {
+  try {
+    const data = await sql<DailyHabitsData>`
+    SELECT
+    COALESCE((
+        SELECT completed
+        FROM daily_habits
+        WHERE date = ${date} AND habit_id = ${habit_id}
+        LIMIT 1
+    ), false) AS completed;
+    `;
+    const completed = data.rows;
+    return completed;
   } catch (error) {
     console.error("Database Error:", error);
     return [];

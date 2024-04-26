@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 export type EventsDisplay = {
   id: string;
   user_id: string;
@@ -7,11 +9,30 @@ export type EventsDisplay = {
 
 export type HabitsDisplay = {
   id: string;
-  user_id: string;
   description: string;
-  active: boolean;
-  active_month: string;
-  dates_completed: Date[];
+};
+
+export type DailyHabitsData = {
+  id: string;
+  completed: boolean;
+  habit_id: string;
+  date: Date;
+};
+
+export type ConfigHabits = {
+  id: string;
+  habit_id: UUID;
+  config_id: string;
+};
+
+export type Configs = {
+  id: string;
+  user_id: string;
+  start_date: string;
+  hydration_type: string;
+  hydration_goal: string;
+  bedtime_goal: string;
+  waketime_goal: string;
 };
 
 export type TodoDisplay = {
