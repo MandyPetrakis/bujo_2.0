@@ -1,15 +1,18 @@
 import HydrationDay from "./hydrationDay";
+import { fetchHydrationConfigsByDay } from "@/app/lib/data";
 
 export default async function HydrationTracker(props: {
   datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
+  // const hydrationConfigs  = await fetchHydrationConfigsByDay(
+  //     props.datesArray.date.toDateString()
+  //   );
+  const length = 10;
   // returns hydration progress bar for each day in the dates array
   const hydrationProgressBar = props.datesArray.map((day, index) => {
     return <HydrationDay date={day.date} key={index} />;
   });
 
-  // length=  total units displayed in the tracker
-  const length = 10;
   //returns the units header from the user determined length
   const unitsHeader = Array.from({ length }, (_, index) => {
     const start = 1;

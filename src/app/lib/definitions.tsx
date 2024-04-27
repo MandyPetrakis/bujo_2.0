@@ -30,7 +30,7 @@ export type Configs = {
   user_id: string;
   start_date: Date;
   hydration_type: string;
-  hydration_goal: string;
+  hydration_goal: number;
   bedtime_goal: string;
   waketime_goal: string;
 };
@@ -50,14 +50,22 @@ export type SleepDisplay = {
   waketime: string;
 };
 
+export type SleepDisplayRange = {
+  earliest_time: number;
+  latest_time: number;
+};
+
+export type SleepGoalRange = {
+  earliest_bedtime_goal: number;
+  latest_waketime_goal: number;
+};
+
 export type SleepRange = {
-  earliestBedtime: string;
-  latestWaketime: string;
+  earliest_bedtime: number;
+  latest_waketime: number;
 };
 
 export type HydrationDisplay = {
   id: string;
-  user_id: string;
-  date: Date;
-  units: number;
+  hydration: string;
 };

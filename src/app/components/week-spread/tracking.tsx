@@ -25,7 +25,7 @@ export default async function Tracking(props: {
         <div className="pt-[85px] h-[24px]">{daysOfWeek}</div>
         <HabitTracker datesArray={props.weekArray} />
         <SleepTracker datesArray={props.weekArray} />
-        {/* <HydrationTracker datesArray={props.weekArray} /> */}
+        <HydrationTracker datesArray={props.weekArray} />
       </div>
     </div>
   );

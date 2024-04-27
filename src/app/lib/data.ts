@@ -1,24 +1,21 @@
-import { sql, createPool } from "@vercel/postgres";
+import { sql } from "@vercel/postgres";
 
 import {
   EventsDisplay,
   HabitsDisplay,
   SleepDisplay,
   TodoDisplay,
+  SleepDisplayRange,
   HydrationDisplay,
   Configs,
   ConfigHabits,
+  SleepGoalRange,
   DailyHabitsData,
   SleepRange,
 } from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 
 //date helper funcions
-
-// const pool = createPool({
-//   connectionString:
-//     "postgres://default:AcKPLl4j9Efd@ep-restless-lab-a4ov31n9-pooler.us-east-1.aws.neon.tech:5432/verceldb",
-// });
 
 export function getDate() {
   const today = new Date();
@@ -134,6 +131,8 @@ export async function fetchEventsByDay(date: string) {
     return [];
   }
 }
+
+//fetch habits
 
 export async function fetchHabitsByRange(start_date: string, end_date: string) {
   try {
@@ -253,22 +252,53 @@ export async function fetchSleepByDay(date: string) {
     return [];
   }
 }
-
-export async function fetchSleepRange(start_date: string, end_date: string) {
+export async function fetchSleepDisplayRange(
+  start_date: string,
+  end_date: string
+) {
   try {
-    const data = await sql<SleepRange>`
-   SELECT
-    MIN(bedtime) AS earliestBedtime,
-    MAX(wakeuptime) AS latestWaketime
-FROM
-    daily_trackings
-WHERE
-    date >= ${start_date} AND date <= ${end_date}
-    `;
+    const data = await sql<SleepDisplayRange>`
+    SELECT
+        MIN(earliest_time) AS earliest_time,
+        MAX(latest_time) AS latest_time
+    FROM (
 
-    const sleepRange = data.rows;
+    SELECT
+        MIN(COALESCE(configs.bedtime_goal, daily_trackings.bedtime)) AS earliest_time,
+        NULL AS latest_time
+    FROM
+        configs
+    LEFT JOIN daily_trackings ON configs.start_date <= daily_trackings.date
+    WHERE
+        configs.start_date <= ${end_date}
+    AND
+        NOT EXISTS (
+            SELECT 1
+            FROM configs AS c
+            WHERE c.start_date > configs.start_date AND c.start_date <= ${end_date}
+        )
+    
+    UNION ALL
 
-    return sleepRange;
+    SELECT
+        NULL AS earliest_time,
+        MAX(COALESCE(configs.waketime_goal, daily_trackings.waketime)) AS latest_time
+    FROM
+        configs
+    LEFT JOIN daily_trackings ON configs.start_date <= daily_trackings.date
+    WHERE
+        configs.start_date <= ${end_date}
+    AND
+        NOT EXISTS (
+            SELECT 1
+            FROM configs AS c
+            WHERE c.start_date > configs.start_date AND c.start_date <= ${end_date}
+        )
+) AS combined_data;
+`;
+    const sleepDisplayRange = data.rows;
+
+    return sleepDisplayRange;
   } catch (error) {
     console.error("Database Error:", error);
     return [];
@@ -281,16 +311,38 @@ export async function fetchHydrationByDay(date: string) {
   try {
     const data = await sql<HydrationDisplay>`
       SELECT
-        hydration.id,
-        hydration.date,
-        hydration.units
-      FROM hydration
-        WHERE hydration.date = ${date}
+        daily_trackings.id,
+        daily_trackings.hydration
+      FROM daily_trackings
+        WHERE daily_trackings.date = ${date}
     `;
 
     const hydrationData = data.rows;
 
     return hydrationData;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+export async function fetchHydrationConfigsByDay(date: string) {
+  try {
+    const data = await sql<Configs>`
+      SELECT 
+          hydration_goal, 
+          hydration_type,
+          start_date
+      FROM 
+          configs 
+      WHERE 
+          start_date = (
+              SELECT MAX(start_date)
+              FROM configs 
+              WHERE start_date < ${date}
+          )
+    `;
+    const configs = data.rows;
+    return configs;
   } catch (error) {
     console.error("Database Error:", error);
     return [];

@@ -1,18 +1,30 @@
 import SleepDay from "./sleepDay";
-import { fetchSleepRange } from "@/app/lib/data";
+import { fetchSleepDisplayRange } from "@/app/lib/data";
+import { differenceInHours } from "date-fns";
 
 export default async function SleepTracker(props: {
   datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
-  const userSleepSettings = { startTime: 21, length: 13 };
-  const length = userSleepSettings.length;
-  const startTime = userSleepSettings.startTime;
+  let earliest_time = 22;
+  let latest_time = 9;
 
-  const sleepRange = await fetchSleepRange(
+  const sleepDisplayRange = await fetchSleepDisplayRange(
     props.datesArray[0].date.toDateString(),
     props.datesArray[props.datesArray.length - 1].date.toDateString()
   );
-  console.log("range", sleepRange);
+
+  if (sleepDisplayRange.length !== 0) {
+    earliest_time = sleepDisplayRange[0].earliest_time;
+    latest_time = sleepDisplayRange[0].latest_time;
+  }
+
+  const sleepDisplayLength = differenceInHours(
+    new Date(2024, 6, 3, latest_time, 0),
+    new Date(2024, 6, 2, earliest_time, 0)
+  );
+
+  const startTime = earliest_time - 2;
+  const length = sleepDisplayLength + 4;
 
   const sleepDisplay = props.datesArray.map((day) => {
     return (

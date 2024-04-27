@@ -34,8 +34,7 @@ export default async function SleepDay(props: {
         key={index}
         className={clsx({
           "border-l border-medium":
-            hour == parseInt(sleepConfigs[0].bedtime_goal),
-          "border-r border-medium":
+            hour == parseInt(sleepConfigs[0].bedtime_goal) ||
             hour == parseInt(sleepConfigs[0].waketime_goal),
         })}
       >
@@ -44,7 +43,7 @@ export default async function SleepDay(props: {
           className={clsx("h-[12px] w-5", {
             "bg-dark":
               (bed_time <= hour && hour > 20 && bed_time != 0) ||
-              (wake_up_time >= hour && hour < 21 && wake_up_time != 0),
+              (wake_up_time > hour && hour < 21 && wake_up_time != 0),
           })}
         ></div>
       </div>
