@@ -1,4 +1,5 @@
 import SleepDay from "./sleepDay";
+import { fetchSleepRange } from "@/app/lib/data";
 
 export default async function SleepTracker(props: {
   datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
@@ -6,6 +7,12 @@ export default async function SleepTracker(props: {
   const userSleepSettings = { startTime: 21, length: 13 };
   const length = userSleepSettings.length;
   const startTime = userSleepSettings.startTime;
+
+  const sleepRange = await fetchSleepRange(
+    props.datesArray[0].date.toDateString(),
+    props.datesArray[props.datesArray.length - 1].date.toDateString()
+  );
+  console.log("range", sleepRange);
 
   const sleepDisplay = props.datesArray.map((day) => {
     return (

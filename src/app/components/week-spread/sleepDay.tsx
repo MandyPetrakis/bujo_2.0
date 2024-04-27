@@ -11,8 +11,6 @@ export default async function SleepDay(props: {
   const sleepConfigs = await fetchSleepConfigsByDate(props.date.toDateString());
   const sleepData = await fetchSleepByDay(props.date.toDateString());
 
-  console.log(sleepConfigs);
-
   const startTime = props.startTime;
   const length = props.length;
 
@@ -33,6 +31,7 @@ export default async function SleepDay(props: {
 
     return (
       <div
+        key={index}
         className={clsx({
           "border-l border-medium":
             hour == parseInt(sleepConfigs[0].bedtime_goal),

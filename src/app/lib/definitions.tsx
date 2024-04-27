@@ -50,6 +50,11 @@ export type SleepDisplay = {
   waketime: string;
 };
 
+export type SleepRange = {
+  earliestBedtime: string;
+  latestWaketime: string;
+};
+
 export type HydrationDisplay = {
   id: string;
   user_id: string;

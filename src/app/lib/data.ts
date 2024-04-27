@@ -9,6 +9,7 @@ import {
   Configs,
   ConfigHabits,
   DailyHabitsData,
+  SleepRange,
 } from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 
@@ -247,6 +248,27 @@ export async function fetchSleepByDay(date: string) {
     const sleepData = data.rows;
 
     return sleepData;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+export async function fetchSleepRange(start_date: string, end_date: string) {
+  try {
+    const data = await sql<SleepRange>`
+   SELECT
+    MIN(bedtime) AS earliestBedtime,
+    MAX(wakeuptime) AS latestWaketime
+FROM
+    daily_trackings
+WHERE
+    date >= ${start_date} AND date <= ${end_date}
+    `;
+
+    const sleepRange = data.rows;
+
+    return sleepRange;
   } catch (error) {
     console.error("Database Error:", error);
     return [];
