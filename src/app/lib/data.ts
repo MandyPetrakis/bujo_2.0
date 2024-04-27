@@ -8,10 +8,7 @@ import {
   SleepDisplayRange,
   HydrationDisplay,
   Configs,
-  ConfigHabits,
-  SleepGoalRange,
   DailyHabitsData,
-  SleepRange,
 } from "./definitions";
 import { getWeek, addWeeks, addDays, getDay } from "date-fns";
 
@@ -259,41 +256,23 @@ export async function fetchSleepDisplayRange(
   try {
     const data = await sql<SleepDisplayRange>`
     SELECT
-        MIN(earliest_time) AS earliest_time,
-        MAX(latest_time) AS latest_time
-    FROM (
-
+    MIN(earliest_bedtime) AS earliest_time,
+    MAX(latest_waketime) AS latest_time
+FROM (
     SELECT
-        MIN(COALESCE(configs.bedtime_goal, daily_trackings.bedtime)) AS earliest_time,
-        NULL AS latest_time
+        MIN(COALESCE(configs.bedtime_goal, daily_trackings.bedtime)) AS earliest_bedtime,
+        MAX(COALESCE(configs.waketime_goal, daily_trackings.waketime)) AS latest_waketime
     FROM
         configs
     LEFT JOIN daily_trackings ON configs.start_date <= daily_trackings.date
     WHERE
-        configs.start_date <= ${end_date}
-    AND
-        NOT EXISTS (
-            SELECT 1
-            FROM configs AS c
-            WHERE c.start_date > configs.start_date AND c.start_date <= ${end_date}
+        configs.start_date = (
+            SELECT MAX(start_date)
+            FROM configs 
+            WHERE start_date < ${start_date}
         )
-    
-    UNION ALL
-
-    SELECT
-        NULL AS earliest_time,
-        MAX(COALESCE(configs.waketime_goal, daily_trackings.waketime)) AS latest_time
-    FROM
-        configs
-    LEFT JOIN daily_trackings ON configs.start_date <= daily_trackings.date
-    WHERE
-        configs.start_date <= ${end_date}
-    AND
-        NOT EXISTS (
-            SELECT 1
-            FROM configs AS c
-            WHERE c.start_date > configs.start_date AND c.start_date <= ${end_date}
-        )
+        OR
+        configs.start_date BETWEEN ${start_date} AND ${end_date}
 ) AS combined_data;
 `;
     const sleepDisplayRange = data.rows;

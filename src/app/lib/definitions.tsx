@@ -19,12 +19,6 @@ export type DailyHabitsData = {
   date: Date;
 };
 
-export type ConfigHabits = {
-  id: string;
-  habit_id: UUID;
-  config_id: string;
-};
-
 export type Configs = {
   id: string;
   user_id: string;
@@ -53,16 +47,6 @@ export type SleepDisplay = {
 export type SleepDisplayRange = {
   earliest_time: number;
   latest_time: number;
-};
-
-export type SleepGoalRange = {
-  earliest_bedtime_goal: number;
-  latest_waketime_goal: number;
-};
-
-export type SleepRange = {
-  earliest_bedtime: number;
-  latest_waketime: number;
 };
 
 export type HydrationDisplay = {

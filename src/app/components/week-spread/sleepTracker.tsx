@@ -12,7 +12,7 @@ export default async function SleepTracker(props: {
     props.datesArray[0].date.toDateString(),
     props.datesArray[props.datesArray.length - 1].date.toDateString()
   );
-
+  console.log(sleepDisplayRange);
   if (sleepDisplayRange.length !== 0) {
     earliest_time = sleepDisplayRange[0].earliest_time;
     latest_time = sleepDisplayRange[0].latest_time;
