@@ -3,7 +3,7 @@ import { fetchSleepDisplayRange } from "@/app/lib/data";
 import { differenceInHours } from "date-fns";
 
 export default async function SleepTracker(props: {
-  datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
+  datesArray: { day: number; date: Date }[];
 }) {
   let earliest_time = 22;
   let latest_time = 9;
@@ -12,7 +12,7 @@ export default async function SleepTracker(props: {
     props.datesArray[0].date.toDateString(),
     props.datesArray[props.datesArray.length - 1].date.toDateString()
   );
-  console.log(sleepDisplayRange);
+
   if (sleepDisplayRange.length !== 0) {
     earliest_time = sleepDisplayRange[0].earliest_time;
     latest_time = sleepDisplayRange[0].latest_time;
@@ -52,11 +52,11 @@ export default async function SleepTracker(props: {
   });
 
   return (
-    <div className="pt-5 pl-5">
+    <div className="pt-5 pl-5 ">
       <p className="flex place-content-center text-sm font-semibold mb-5">
         Sleep
       </p>
-      <div className="flex pl-8 mb-2">{hoursHeader}</div>
+      <div className="flex pl-8 mb-2 place-content-center">{hoursHeader}</div>
       {sleepDisplay}
     </div>
   );

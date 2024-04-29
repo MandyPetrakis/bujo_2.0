@@ -9,8 +9,9 @@ import {
   HydrationDisplay,
   Configs,
   DailyHabitsData,
+  HydrationRange,
 } from "./definitions";
-import { getWeek, addWeeks, addDays, getDay } from "date-fns";
+import { getWeek, addWeeks, addDays, getDay, getDaysInYear } from "date-fns";
 
 //date helper funcions
 
@@ -61,18 +62,6 @@ export function getDayOfWeek(year: number, month: number, day: number) {
   return daysOfWeek[date.getDay()];
 }
 
-export function createMonthArray(year: number, month: number) {
-  const length = getDaysInMonth(year, month);
-  return Array.from({ length }, (_, index) => {
-    const date = new Date(`${year}-${month}-${index + 1}`);
-    return {
-      day: index + 1,
-      dayOfWeek: getDayOfWeek(year, month, index + 1),
-      date: date,
-    };
-  });
-}
-
 //week date helpers
 
 export function getWeekNumber(date: Date) {
@@ -107,6 +96,31 @@ export function createWeekArray(startDate: Date) {
     };
   });
 }
+
+export function createYearArray(year: number) {
+  const length = getDaysInYear(year);
+  const startDate = new Date(`${year}-01-1`);
+  return Array.from({ length }, (_, index) => {
+    const date = addDays(startDate, index);
+    return {
+      day: index + 1,
+      date: date,
+    };
+  });
+}
+
+export function createMonthArray(year: number, month: number) {
+  const length = getDaysInMonth(year, month);
+  return Array.from({ length }, (_, index) => {
+    const date = new Date(`${year}-${month}-${index + 1}`);
+    return {
+      day: index + 1,
+      dayOfWeek: getDayOfWeek(year, month, index + 1),
+      date: date,
+    };
+  });
+}
+
 // fetch events
 
 export async function fetchEventsByDay(date: string) {
@@ -230,6 +244,7 @@ export async function fetchSleepConfigsByDate(date: string) {
     return [];
   }
 }
+
 export async function fetchSleepByDay(date: string) {
   try {
     const data = await sql<SleepDisplay>`
@@ -249,6 +264,7 @@ export async function fetchSleepByDay(date: string) {
     return [];
   }
 }
+
 export async function fetchSleepDisplayRange(
   start_date: string,
   end_date: string
@@ -304,6 +320,7 @@ export async function fetchHydrationByDay(date: string) {
     return [];
   }
 }
+
 export async function fetchHydrationConfigsByDay(date: string) {
   try {
     const data = await sql<Configs>`
@@ -322,6 +339,41 @@ export async function fetchHydrationConfigsByDay(date: string) {
     `;
     const configs = data.rows;
     return configs;
+  } catch (error) {
+    console.error("Database Error:", error);
+    return [];
+  }
+}
+
+export async function fetchHydrationDisplayRange(
+  start_date: string,
+  end_date: string
+) {
+  try {
+    const data = await sql<HydrationRange>`
+    SELECT
+        MAX(max_hydration) AS highest_hydration
+    FROM (
+        SELECT
+            GREATEST(
+                MAX(configs.hydration_goal), 
+                MAX(daily_trackings.hydration)
+            ) AS max_hydration
+        FROM
+            (
+                SELECT MAX(start_date) AS start_date
+                FROM configs
+                WHERE start_date < ${start_date}
+                ORDER BY start_date DESC
+              LIMIT 1
+            ) AS latest_config
+        LEFT JOIN configs ON latest_config.start_date = configs.start_date
+        LEFT JOIN daily_trackings ON daily_trackings.date BETWEEN ${start_date} AND ${end_date}
+    ) AS hydration_data;
+
+    `;
+    const hydrationRange = data.rows;
+    return hydrationRange;
   } catch (error) {
     console.error("Database Error:", error);
     return [];

@@ -5,7 +5,10 @@ import {
 import clsx from "clsx";
 import { revalidatePath } from "next/cache";
 
-export default async function HydrationDay(props: { date: Date }) {
+export default async function HydrationDay(props: {
+  date: Date;
+  hydrationLength: number;
+}) {
   revalidatePath("page");
 
   const hydrationGoal = await fetchHydrationConfigsByDay(
@@ -21,7 +24,7 @@ export default async function HydrationDay(props: { date: Date }) {
   if (hydrationData.length !== 0) {
     dayUnits = parseInt(hydrationData[0].hydration);
   }
-  const length = Math.max(hydrationGoal[0].hydration_goal, dayUnits);
+  const length = props.hydrationLength;
 
   // units - creates an array the length of total units displayed for each day
   const units = Array.from({ length }, (_, index) => {
@@ -29,14 +32,14 @@ export default async function HydrationDay(props: { date: Date }) {
     return (
       <div
         key={index}
-        className={clsx({
+        className={clsx("w-[3px]", {
           "border-r border-medium":
             hydrationGoal[0].hydration_goal == index + 1,
         })}
       >
         <div
           key={index}
-          className={clsx("h-[12px] w-1", {
+          className={clsx("h-[12px] w-[3px]", {
             "bg-dark": dayUnits >= index + 1,
           })}
         ></div>
@@ -45,14 +48,12 @@ export default async function HydrationDay(props: { date: Date }) {
   });
 
   return (
-    <div
-      key={props.date.toDateString()}
-      className="flex place-content-center h-[24px]"
-    >
+    <div key={props.date.toDateString()} className="flex h-[24px] pl-8 ">
       {units}
-      <p className="flex place-content-center text-sm h-[24px] w-5 pl-4">
+      <div className="flex place-content-center text-xs h-[24px] w-1 ml-8">
         {dayUnits}
-      </p>
+        <p className="ml-1">{hydrationGoal[0].hydration_type}</p>
+      </div>
     </div>
   );
 }

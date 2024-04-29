@@ -8,7 +8,15 @@ export default async function SleepDay(props: {
   startTime: number;
 }) {
   revalidatePath("page");
+  let bedtime_goal = 1;
+  let waketime_goal = 9;
   const sleepConfigs = await fetchSleepConfigsByDate(props.date.toDateString());
+
+  if (sleepConfigs.length != 0) {
+    bedtime_goal = sleepConfigs[0].bedtime_goal;
+    waketime_goal = sleepConfigs[0].waketime_goal;
+  }
+
   const sleepData = await fetchSleepByDay(props.date.toDateString());
 
   const startTime = props.startTime;
@@ -25,8 +33,7 @@ export default async function SleepDay(props: {
     let wake_up_time = 0;
 
     if (sleepData.length !== 0) {
-      (bed_time = parseInt(sleepData[0].bedtime)),
-        (wake_up_time = parseInt(sleepData[0].waketime));
+      (bed_time = sleepData[0].bedtime), (wake_up_time = sleepData[0].waketime);
     }
 
     return (
@@ -34,8 +41,7 @@ export default async function SleepDay(props: {
         key={index}
         className={clsx({
           "border-l border-medium":
-            hour == parseInt(sleepConfigs[0].bedtime_goal) ||
-            hour == parseInt(sleepConfigs[0].waketime_goal),
+            hour == bedtime_goal || hour == waketime_goal,
         })}
       >
         <div

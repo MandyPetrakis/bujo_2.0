@@ -25,8 +25,12 @@ export type Configs = {
   start_date: Date;
   hydration_type: string;
   hydration_goal: number;
-  bedtime_goal: string;
-  waketime_goal: string;
+  bedtime_goal: number;
+  waketime_goal: number;
+};
+
+export type HydrationRange = {
+  highest_hydration: number;
 };
 
 export type TodoDisplay = {
@@ -40,8 +44,8 @@ export type TodoDisplay = {
 
 export type SleepDisplay = {
   id: string;
-  bedtime: string;
-  waketime: string;
+  bedtime: number;
+  waketime: number;
 };
 
 export type SleepDisplayRange = {
