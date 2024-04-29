@@ -1,5 +1,5 @@
-import SleepTracker from "./sleepTracker";
-import HydrationTracker from "./hydrationTracker";
+import SleepTracker from "../sleepTracker";
+import HydrationTracker from "../hydrationTracker";
 import HabitTracker from "../habitTracker";
 
 export default async function Tracking(props: {

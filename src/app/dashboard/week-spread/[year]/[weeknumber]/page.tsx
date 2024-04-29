@@ -1,4 +1,4 @@
-import Todos from "@/app/components/month-spread/todos";
+import Todos from "@/app/components/todos";
 import Tracking from "@/app/components/week-spread/tracking";
 import WeekHeader from "@/app/components/week-spread/week-header";
 import Week from "@/app/components/week-spread/week";

@@ -1,6 +1,6 @@
 import Calendar from "@/app/components/month-spread/calendar";
 import MonthHeader from "@/app/components/month-spread/month-header";
-import Todos from "@/app/components/month-spread/todos";
+import Todos from "@/app/components/todos";
 import Goals from "@/app/components/month-spread/goals";
 import Routines from "@/app/components/month-spread/routines";
 
