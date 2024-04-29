@@ -1,5 +1,5 @@
 import Todos from "@/app/components/todos";
-import Tracking from "@/app/components/week-spread/tracking";
+import Tracking from "@/app/components/week-spread/week-tracking";
 import WeekHeader from "@/app/components/week-spread/week-header";
 import Week from "@/app/components/week-spread/week";
 import { getDateOfWeek, createWeekArray } from "@/app/lib/data";

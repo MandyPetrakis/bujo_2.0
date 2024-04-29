@@ -7,10 +7,9 @@ export default async function Week(props: {
   startOfWeek: Date;
   weekArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
 }) {
-  const weekArray = createWeekArray(props.startOfWeek);
   const today = new Date();
 
-  const displayWeek = weekArray.map((day) => {
+  const displayWeek = props.weekArray.map((day) => {
     return (
       <WeekDay
         key={day.dayOfWeek}

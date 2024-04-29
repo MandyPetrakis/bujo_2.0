@@ -2,7 +2,7 @@ import HabitDay from "./habitDay";
 import { fetchHabitsByRange } from "../lib/data";
 
 export default async function HabitTracker(props: {
-  datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
+  datesArray: { day: number; date: Date }[];
 }) {
   const weekHabits = await fetchHabitsByRange(
     props.datesArray[0].date.toDateString(),
@@ -32,5 +32,12 @@ export default async function HabitTracker(props: {
     );
   });
 
-  return <div className="flex pt-20">{habitDisplay}</div>;
+  return (
+    <div className="">
+      <p className="flex place-content-center text-sm font-semibold mb-5 pb-16">
+        Habits
+      </p>
+      <div className="flex">{habitDisplay}</div>
+    </div>
+  );
 }

@@ -1,10 +1,12 @@
 export default async function Goals() {
   return (
-    <div className="border h-48 p-5 text-sm min-w-fit mb-5">
+    <div className="border p-5 text-sm min-w-fit min-h-fit">
       <div className="flex justify-center  place-content-center mb-5 font-semibold">
         Goals
       </div>
-      <div>Get in shape and find a job</div>
+      <div>Finish BUJO project.</div>
+      <div>In the gym 5x/week.</div>
+      <div>Consistent sleep.</div>
     </div>
   );
 }

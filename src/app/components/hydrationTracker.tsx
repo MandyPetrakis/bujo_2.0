@@ -2,7 +2,7 @@ import HydrationDay from "./hydrationDay";
 import { fetchHydrationDisplayRange } from "@/app/lib/data";
 
 export default async function HydrationTracker(props: {
-  datesArray: { dayOfWeek: string; day: number; month: string; date: Date }[];
+  datesArray: { day: number; date: Date }[];
 }) {
   const hydrationDisplayLength = await fetchHydrationDisplayRange(
     props.datesArray[0].date.toDateString(),
