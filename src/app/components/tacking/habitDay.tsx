@@ -1,6 +1,6 @@
-import { createDailyHabit, updateDailyHabit } from "../lib/actions";
-import { fetchDailyHabitsByDayandId } from "../lib/data";
-import UpdateHabit from "./updateHabit";
+import { createDailyHabit, updateDailyHabit } from "../../lib/actions";
+import { fetchDailyHabitsByDayandId } from "../../lib/data";
+import UpdateHabit from "./completeItem";
 export default async function HabitDay(props: {
   date: Date;
   habit: { id: string; description: string };
@@ -21,11 +21,11 @@ export default async function HabitDay(props: {
     >
       <UpdateHabit completed={completed} />
       <input
-        type="radio"
+        readOnly
+        type="text"
         name="completed"
-        value="completed"
+        value={completed.toString()}
         className="hidden"
-        checked={completed}
       />
       <input
         readOnly
@@ -41,7 +41,9 @@ export default async function HabitDay(props: {
         name="date"
         value={props.date.toDateString()}
       />
-      <input readOnly className="hidden" type="text" name="id" value={id} />
+      {id !== null ? (
+        <input readOnly className="hidden" type="text" name="id" value={id} />
+      ) : null}
     </form>
   );
 }

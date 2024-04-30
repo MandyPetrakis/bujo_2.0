@@ -1,6 +1,6 @@
-import SleepTracker from "../sleepTracker";
-import HabitTracker from "../habitTracker";
-import HydrationTracker from "../hydrationTracker";
+import SleepTracker from "../tacking/sleepTracker";
+import HabitTracker from "../tacking/habitTracker";
+import HydrationTracker from "../tacking/hydrationTracker";
 
 export default async function MonthTracking(props: {
   datesArray: { day: number; dayOfWeek: string; date: Date }[];

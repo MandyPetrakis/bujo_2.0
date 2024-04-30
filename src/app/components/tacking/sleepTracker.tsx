@@ -45,7 +45,7 @@ export default async function SleepTracker(props: {
     } else hour = startTime + index - 12;
 
     return (
-      <p key={hour} className="w-5 flex place-content-center text-sm">
+      <p key={index} className="w-5 flex place-content-center text-sm">
         {hour}
       </p>
     );

@@ -1,6 +1,6 @@
 import { fetchIncompleteToDos } from "@/app/lib/data";
 import { completeToDo } from "../lib/actions";
-import UpdateHabit from "./updateHabit";
+import CompleteItem from "./tacking/completeItem";
 
 export default async function Todos() {
   const todoList = await fetchIncompleteToDos();
@@ -13,6 +13,8 @@ export default async function Todos() {
           className="w-5 flex-none h-5 border mr-1 mb-2 "
         >
           <input
+            readOnly
+            type="text"
             name="complete"
             value={todo.complete.toString()}
             className="hidden"
@@ -24,7 +26,7 @@ export default async function Todos() {
             name="id"
             value={todo.id}
           />
-          <UpdateHabit completed={todo.complete} />
+          <CompleteItem completed={todo.complete} />
         </form>
         {todo.description}
       </div>

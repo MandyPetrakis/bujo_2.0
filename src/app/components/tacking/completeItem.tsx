@@ -1,5 +1,5 @@
 "use client";
-export default function UpdateHabit(props: { completed: boolean }) {
+export default function completeItem(props: { completed: boolean }) {
   const completedIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"

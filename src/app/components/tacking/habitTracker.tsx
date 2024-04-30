@@ -1,5 +1,5 @@
 import HabitDay from "./habitDay";
-import { fetchHabitsByRange } from "../lib/data";
+import { fetchHabitsByRange } from "../../lib/data";
 
 export default async function HabitTracker(props: {
   datesArray: { day: number; date: Date }[];
