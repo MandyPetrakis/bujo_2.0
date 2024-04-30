@@ -1,14 +1,31 @@
 import { fetchIncompleteToDos } from "@/app/lib/data";
-import { revalidatePath } from "next/cache";
+import { completeToDo } from "../lib/actions";
+import UpdateHabit from "./updateHabit";
 
 export default async function Todos() {
-  revalidatePath("page");
   const todoList = await fetchIncompleteToDos();
 
   const todoRender = todoList.map((todo) => {
     return (
       <div key={todo.id} className="flex whitespace-nowrap">
-        <div className="w-5 flex-none h-5 border mr-1 mb-2 "></div>
+        <form
+          action={completeToDo}
+          className="w-5 flex-none h-5 border mr-1 mb-2 "
+        >
+          <input
+            name="complete"
+            value={todo.complete.toString()}
+            className="hidden"
+          />
+          <input
+            readOnly
+            className="hidden"
+            type="text"
+            name="id"
+            value={todo.id}
+          />
+          <UpdateHabit completed={todo.complete} />
+        </form>
         {todo.description}
       </div>
     );

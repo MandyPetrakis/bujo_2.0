@@ -28,18 +28,20 @@ export default async function HabitDay(props: {
         checked={completed}
       />
       <input
+        readOnly
         className="hidden"
         type="text"
         name="habit_id"
         value={props.habit.id}
       />
       <input
+        readOnly
         className="hidden"
         type="text"
         name="date"
         value={props.date.toDateString()}
       />
-      <input className="hidden" type="text" name="id" value={id} />
+      <input readOnly className="hidden" type="text" name="id" value={id} />
     </form>
   );
 }
