@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-
+import { unstable_noStore as noStore } from "next/cache";
 import {
   EventsDisplay,
   HabitsDisplay,
@@ -124,6 +124,8 @@ export function createMonthArray(year: number, month: number) {
 // fetch events
 
 export async function fetchEventsByDay(date: string) {
+  noStore();
+
   try {
     const data = await sql<EventsDisplay>`
       SELECT
@@ -146,6 +148,8 @@ export async function fetchEventsByDay(date: string) {
 //fetch habits
 
 export async function fetchHabitsByRange(start_date: string, end_date: string) {
+  noStore();
+
   try {
     const data = await sql<HabitsDisplay>`
       SELECT DISTINCT habits.*
@@ -177,15 +181,23 @@ export async function fetchDailyHabitsByDayandId(
   date: string,
   habit_id: string
 ) {
+  noStore();
+
   try {
     const data = await sql<DailyHabitsData>`
-    SELECT
+SELECT
     COALESCE((
         SELECT completed
         FROM daily_habits
         WHERE date = ${date} AND habit_id = ${habit_id}
         LIMIT 1
-    ), false) AS completed;
+    ), false) AS completed,
+    COALESCE((
+        SELECT id
+        FROM daily_habits
+        WHERE date = ${date} AND habit_id = ${habit_id}
+        LIMIT 1
+    ), NULL) AS id;
     `;
     const completed = data.rows;
     return completed;
@@ -197,6 +209,8 @@ export async function fetchDailyHabitsByDayandId(
 
 //fetch todos
 export async function fetchIncompleteToDos() {
+  noStore();
+
   try {
     const data = await sql<TodoDisplay>`
       SELECT
@@ -221,6 +235,8 @@ export async function fetchIncompleteToDos() {
 //fetch sleep
 
 export async function fetchSleepConfigsByDate(date: string) {
+  noStore();
+
   try {
     const data = await sql<Configs>`
       SELECT 
@@ -246,6 +262,8 @@ export async function fetchSleepConfigsByDate(date: string) {
 }
 
 export async function fetchSleepByDay(date: string) {
+  noStore();
+
   try {
     const data = await sql<SleepDisplay>`
       SELECT
@@ -269,6 +287,8 @@ export async function fetchSleepDisplayRange(
   start_date: string,
   end_date: string
 ) {
+  noStore();
+
   try {
     const data = await sql<SleepDisplayRange>`
     SELECT
@@ -303,6 +323,8 @@ FROM (
 // fetch hydration
 
 export async function fetchHydrationByDay(date: string) {
+  noStore();
+
   try {
     const data = await sql<HydrationDisplay>`
       SELECT
@@ -322,6 +344,8 @@ export async function fetchHydrationByDay(date: string) {
 }
 
 export async function fetchHydrationConfigsByDay(date: string) {
+  noStore();
+
   try {
     const data = await sql<Configs>`
       SELECT 
@@ -349,6 +373,8 @@ export async function fetchHydrationDisplayRange(
   start_date: string,
   end_date: string
 ) {
+  noStore();
+
   try {
     const data = await sql<HydrationRange>`
     SELECT

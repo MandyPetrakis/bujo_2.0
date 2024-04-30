@@ -16,7 +16,7 @@ export default function Calendar(props: {
   });
 
   return (
-    <div className="flex h-dvh overflow-scroll px-10">
+    <div className="flex h-dvh overflow-scroll px-10 w-1/3">
       <div className="grow">{calendar}</div>
     </div>
   );
