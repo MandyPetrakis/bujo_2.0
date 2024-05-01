@@ -1,6 +1,6 @@
 import { fetchIncompleteToDos } from "@/app/lib/data";
 import { completeToDo } from "../lib/actions";
-import CompleteItem from "./tacking/completeItem";
+import CompleteItem from "./trackers/completeItem";
 
 export default async function Todos() {
   const todoList = await fetchIncompleteToDos();

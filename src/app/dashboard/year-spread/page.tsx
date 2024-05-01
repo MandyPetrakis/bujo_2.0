@@ -1,5 +1,5 @@
 import { createYearArray } from "@/app/lib/data";
-import SleepTracker from "@/app/components/tacking/sleepTracker";
+import SleepTracker from "@/app/components/trackers/sleepTracker";
 
 export default function YearSpread() {
   const dateArray = createYearArray(2024);

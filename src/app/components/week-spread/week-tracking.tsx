@@ -1,6 +1,6 @@
-import SleepTracker from "../tacking/sleepTracker";
-import HydrationTracker from "../tacking/hydrationTracker";
-import HabitTracker from "../tacking/habitTracker";
+import SleepTracker from "../trackers/sleepTracker";
+import HydrationTracker from "../trackers/hydrationTracker";
+import HabitTracker from "../trackers/habitTracker";
 
 export default async function Tracking(props: {
   startOfWeek: Date;
