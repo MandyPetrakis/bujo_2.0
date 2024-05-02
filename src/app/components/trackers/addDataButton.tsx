@@ -2,6 +2,7 @@
 import { useState } from "react";
 import AddSleepForm from "../forms/addSleepForm";
 import AddHydrationForm from "../forms/addHydrationForm";
+import AddTodoForm from "../forms/addTodoForm";
 import clsx from "clsx";
 
 export default function AddDataButton(props: {
@@ -17,6 +18,10 @@ export default function AddDataButton(props: {
 
   if (addingData && props.type === "hydration") {
     return <AddHydrationForm hasId={props.hasId} date={props.date} />;
+  }
+
+  if (addingData && props.type === "todo") {
+    return <AddTodoForm />;
   }
 
   return (

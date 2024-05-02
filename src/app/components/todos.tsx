@@ -1,9 +1,11 @@
 import { fetchIncompleteToDos } from "@/app/lib/data";
 import { completeToDo } from "../lib/actions";
 import CompleteItem from "./trackers/completeItem";
+import AddDataButton from "./trackers/addDataButton";
 
 export default async function Todos() {
   const todoList = await fetchIncompleteToDos();
+  const date = new Date();
 
   const todoRender = todoList.map((todo) => {
     return (
@@ -34,9 +36,12 @@ export default async function Todos() {
   });
 
   return (
-    <div className="p-5 pb-10 text-sm border min-w-fit max-w-[280px] w-1/3 h-full">
+    <div className="p-5 pb-10 text-sm border min-w-fit max-w-[280px] w-1/3 h-full group">
       <div className="flex place-content-center font-semibold pb-5">
         To Do List
+      </div>
+      <div className="flex place-content-center min-w-full items-center">
+        <AddDataButton hasId={"false"} type="todo" date={date} />
       </div>
       <div className="max-h-full overflow-scroll">{todoRender}</div>
     </div>

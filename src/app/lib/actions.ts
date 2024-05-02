@@ -98,6 +98,28 @@ export async function completeToDo(formData: FormData) {
   revalidatePath("/dashboard");
 }
 
+const CreateTodo = ToDoSchema.omit({
+  user_id: true,
+  completed_date: true,
+  complete: true,
+  id: true,
+});
+export async function createTodo(formData: FormData) {
+  console.log(formData);
+  const { description, due_date } = CreateTodo.parse({
+    description: formData.get("description"),
+    due_date: formData.get("date"),
+  });
+  const complete = false;
+  const user_id = "410544b2-4001-4271-9855-fec4b6a6442a";
+  await sql`
+  INSERT INTO todos (description, complete, due_date, user_id)
+  VALUES (${description}, ${complete}, ${due_date}, ${user_id})
+  `;
+
+  revalidatePath("/dashboard");
+}
+
 //add sleep data
 const CreateSleepData = DailySleepSchema.omit({
   user_id: true,
