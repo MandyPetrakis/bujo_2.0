@@ -3,26 +3,23 @@ import {
   fetchHydrationConfigsByDay,
 } from "@/app/lib/data";
 import clsx from "clsx";
-import { revalidatePath } from "next/cache";
 
 export default async function HydrationDay(props: {
   date: Date;
   hydrationLength: number;
 }) {
-  revalidatePath("page");
-
   const hydrationGoal = await fetchHydrationConfigsByDay(
     props.date.toDateString()
   );
 
   const hydrationData = await fetchHydrationByDay(props.date.toDateString());
-
+  console.log(hydrationData[0]);
   //daily units is declared and set to 0 in the event the user hasn't yet entered data for that day
   let dayUnits = 0;
 
   //if the DB returns data for the day, the units are set to the stored data
   if (hydrationData.length !== 0) {
-    dayUnits = parseInt(hydrationData[0].hydration);
+    dayUnits = parseInt(hydrationData[0].hydrations);
   }
   const length = props.hydrationLength;
 

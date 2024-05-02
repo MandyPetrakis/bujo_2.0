@@ -55,5 +55,5 @@ export type SleepDisplayRange = {
 
 export type HydrationDisplay = {
   id: string;
-  hydration: string;
+  hydrations: string;
 };

@@ -267,11 +267,11 @@ export async function fetchSleepByDay(date: string) {
   try {
     const data = await sql<SleepDisplay>`
       SELECT
-        daily_trackings.id,
-        daily_trackings.bedtime,
-        daily_trackings.waketime
-      FROM daily_trackings
-        WHERE daily_trackings.date = ${date}
+        daily_sleeps.id,
+        daily_sleeps.bedtime,
+        daily_sleeps.waketime
+      FROM daily_sleeps
+        WHERE daily_sleeps.date = ${date}
     `;
 
     const sleepData = data.rows;
@@ -296,11 +296,11 @@ export async function fetchSleepDisplayRange(
     MAX(latest_waketime) AS latest_time
 FROM (
     SELECT
-        MIN(COALESCE(configs.bedtime_goal, daily_trackings.bedtime)) AS earliest_bedtime,
-        MAX(COALESCE(configs.waketime_goal, daily_trackings.waketime)) AS latest_waketime
+        MIN(COALESCE(configs.bedtime_goal, daily_sleeps.bedtime)) AS earliest_bedtime,
+        MAX(COALESCE(configs.waketime_goal, daily_sleeps.waketime)) AS latest_waketime
     FROM
         configs
-    LEFT JOIN daily_trackings ON configs.start_date <= daily_trackings.date
+    LEFT JOIN daily_sleeps ON configs.start_date <= daily_sleeps.date
     WHERE
         configs.start_date = (
             SELECT MAX(start_date)
@@ -328,10 +328,10 @@ export async function fetchHydrationByDay(date: string) {
   try {
     const data = await sql<HydrationDisplay>`
       SELECT
-        daily_trackings.id,
-        daily_trackings.hydration
-      FROM daily_trackings
-        WHERE daily_trackings.date = ${date}
+        daily_hydrations.id,
+        daily_hydrations.hydrations
+      FROM daily_hydrations
+        WHERE daily_hydrations.date = ${date}
     `;
 
     const hydrationData = data.rows;
@@ -383,7 +383,7 @@ export async function fetchHydrationDisplayRange(
         SELECT
             GREATEST(
                 MAX(configs.hydration_goal), 
-                MAX(daily_trackings.hydration)
+                MAX(daily_hydrations.hydrations)
             ) AS max_hydration
         FROM
             (
@@ -394,7 +394,7 @@ export async function fetchHydrationDisplayRange(
               LIMIT 1
             ) AS latest_config
         LEFT JOIN configs ON latest_config.start_date = configs.start_date
-        LEFT JOIN daily_trackings ON daily_trackings.date BETWEEN ${start_date} AND ${end_date}
+        LEFT JOIN daily_hydrations ON daily_hydrations.date BETWEEN ${start_date} AND ${end_date}
     ) AS hydration_data;
 
     `;

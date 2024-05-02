@@ -8,7 +8,6 @@ export default async function HydrationTracker(props: {
     props.datesArray[0].date.toDateString(),
     props.datesArray[props.datesArray.length - 1].date.toDateString()
   );
-
   const hydrationLength = hydrationDisplayLength[0].highest_hydration;
 
   // returns hydration progress bar for each day in the dates array
