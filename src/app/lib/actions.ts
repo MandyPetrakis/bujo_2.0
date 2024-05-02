@@ -21,13 +21,19 @@ const ToDoSchema = z.object({
   complete: z.string(),
 });
 
-const DailyTrackingSchema = z.object({
+const DailySleepSchema = z.object({
   id: z.string(),
   user_id: z.string(),
   date: z.string(),
-  hydration: z.number(),
   bedtime: z.string(),
   waketime: z.string(),
+});
+
+const DailyHydrationSchema = z.object({
+  id: z.string(),
+  user_id: z.string(),
+  date: z.string(),
+  hydrations: z.string(),
 });
 
 //create and update daily_habits
@@ -93,10 +99,9 @@ export async function completeToDo(formData: FormData) {
 }
 
 //add sleep data
-const CreateSleepData = DailyTrackingSchema.omit({
+const CreateSleepData = DailySleepSchema.omit({
   user_id: true,
   id: true,
-  hydration: true,
 });
 
 export async function createSleepTracking(formData: FormData) {
@@ -107,19 +112,17 @@ export async function createSleepTracking(formData: FormData) {
   });
 
   const user_id = "410544b2-4001-4271-9855-fec4b6a6442a";
-  const hydration = 0;
 
   await sql`
-  INSERT INTO daily_trackings (bedtime, waketime, date, user_id, hydration)
-  VALUES (${bedtime}, ${waketime}, ${date}, ${user_id}, ${hydration})
+  INSERT INTO daily_sleeps (bedtime, waketime, date, user_id)
+  VALUES (${bedtime}, ${waketime}, ${date}, ${user_id})
   `;
 
   revalidatePath("/dashboard");
 }
 
-const UpdateSleepData = DailyTrackingSchema.omit({
+const UpdateSleepData = DailySleepSchema.omit({
   user_id: true,
-  hydration: true,
   date: true,
 });
 
@@ -131,8 +134,50 @@ export async function updateSleepTracking(formData: FormData) {
   });
 
   await sql`
-  UPDATE daily_habits
+  UPDATE daily_sleeps
   SET bedtime = ${bedtime}, waketime = ${waketime}
+  WHERE id = ${id}
+  `;
+
+  revalidatePath("/dashboard");
+}
+
+//add hydration data
+const CreateHydrationData = DailyHydrationSchema.omit({
+  user_id: true,
+  id: true,
+});
+
+export async function createHydrationTracking(formData: FormData) {
+  const { hydrations, date } = CreateHydrationData.parse({
+    hydrations: formData.get("hydrations"),
+    date: formData.get("date"),
+  });
+
+  const user_id = "410544b2-4001-4271-9855-fec4b6a6442a";
+
+  await sql`
+  INSERT INTO daily_hydrations (hydrations, date, user_id)
+  VALUES (${hydrations}, ${date}, ${user_id})
+  `;
+
+  revalidatePath("/dashboard");
+}
+
+const UpdateHydrationData = DailyHydrationSchema.omit({
+  user_id: true,
+  date: true,
+});
+
+export async function updateHydrationTracking(formData: FormData) {
+  const { hydrations, id } = UpdateHydrationData.parse({
+    hydrations: formData.get("hydrations"),
+    id: formData.get("id"),
+  });
+
+  await sql`
+  UPDATE daily_hydrations
+  SET hydrations = ${hydrations}
   WHERE id = ${id}
   `;
 

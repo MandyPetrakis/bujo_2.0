@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { fetchSleepByDay, fetchSleepConfigsByDate } from "@/app/lib/data";
 import { differenceInHours, subDays } from "date-fns";
-import AddSleepButton from "./addSleepButton";
+import AddDataButton from "./addDataButton";
 
 export default async function SleepDay(props: {
   date: Date;
@@ -11,7 +11,6 @@ export default async function SleepDay(props: {
   //sets values for sleep time goals to 0 in case the user doesn't set them in configs
   let bedtime_goal = 0;
   let waketime_goal = 0;
-  let hasData = false;
   let hasId = "false";
 
   //fetch user sleep configs by day in the event the user updated them during the week
@@ -45,7 +44,6 @@ export default async function SleepDay(props: {
     if (sleepData.length !== 0) {
       bed_time = sleepData[0].bedtime;
       wake_up_time = sleepData[0].waketime;
-      hasData = true;
       hasId = sleepData[0].id;
     }
 
@@ -79,7 +77,9 @@ export default async function SleepDay(props: {
       className="flex h-[24px] place-content-center relative group"
     >
       {hours}
-      {hasData ? null : <AddSleepButton hasId={hasId} date={props.date} />}
+      {hasId !== "false" ? null : (
+        <AddDataButton hasId={hasId} date={props.date} type="sleep" />
+      )}
       <p className="flex place-content-center text-sm h-[24px] "></p>
     </div>
   );

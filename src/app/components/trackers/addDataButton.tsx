@@ -1,13 +1,22 @@
 "use client";
 import { useState } from "react";
-import AddSleepForm from "./addSleepForm";
+import AddSleepForm from "../forms/addSleepForm";
+import AddHydrationForm from "../forms/addHydrationForm";
 import clsx from "clsx";
 
-export default function AddSleepButton(props: { hasId: string; date: Date }) {
+export default function AddDataButton(props: {
+  hasId: string;
+  date: Date;
+  type: string;
+}) {
   const [addingData, setAddingData] = useState(false);
 
-  if (addingData) {
+  if (addingData && props.type === "sleep") {
     return <AddSleepForm hasId={props.hasId} date={props.date} />;
+  }
+
+  if (addingData && props.type === "hydration") {
+    return <AddHydrationForm hasId={props.hasId} date={props.date} />;
   }
 
   return (
