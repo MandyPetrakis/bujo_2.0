@@ -61,7 +61,11 @@ export async function updateDailyHabit(formData: FormData) {
     completed: formData.get("completed"),
     id: formData.get("id"),
   });
-  const updatedCompleted = !completed;
+  let updatedCompleted;
+
+  if (completed === "true") {
+    updatedCompleted = false;
+  } else updatedCompleted = true;
 
   await sql`
   UPDATE daily_habits
@@ -86,8 +90,11 @@ export async function completeToDo(formData: FormData) {
     id: formData.get("id"),
     complete: formData.get("complete"),
   });
+  let updatedCompleted;
   const completedDate = new Date().toDateString();
-  const updatedCompleted = !complete;
+  if (complete === "true") {
+    updatedCompleted = false;
+  } else updatedCompleted = true;
 
   await sql`
   UPDATE todos
@@ -104,8 +111,8 @@ const CreateTodo = ToDoSchema.omit({
   complete: true,
   id: true,
 });
+
 export async function createTodo(formData: FormData) {
-  console.log(formData);
   const { description, due_date } = CreateTodo.parse({
     description: formData.get("description"),
     due_date: formData.get("date"),

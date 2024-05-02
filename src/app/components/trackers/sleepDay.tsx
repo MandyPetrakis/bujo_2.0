@@ -21,8 +21,11 @@ export default async function SleepDay(props: {
     bedtime_goal = sleepConfigs[0].bedtime_goal;
     waketime_goal = sleepConfigs[0].waketime_goal;
   }
-  //fetched sleel data for each day
-  const sleepData = await fetchSleepByDay(props.date.toDateString());
+  //fetched sleep data for each day in the past
+  let sleepData: { id: string; bedtime: number; waketime: number }[] = [];
+  if (props.date.toDateString() >= new Date().toDateString()) {
+    sleepData = await fetchSleepByDay(props.date.toDateString());
+  }
   //sets start time and length for sleep hours from props
   const startTime = props.startTime;
   const length = props.length;
