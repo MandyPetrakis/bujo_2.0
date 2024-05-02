@@ -5,6 +5,8 @@ export type EventsDisplay = {
   user_id: string;
   description: string;
   date: string;
+  time: number;
+  all_day: boolean;
 };
 
 export type HabitsDisplay = {

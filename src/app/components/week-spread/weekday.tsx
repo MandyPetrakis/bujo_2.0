@@ -11,7 +11,50 @@ export default async function WeekDay(props: {
   const events = await fetchEventsByDay(props.date.toDateString());
   const isToday = props.date.toDateString() == props.today.toDateString();
 
-  const eventsDisplay = events.map((event) => event.description);
+  const allDayEvents = events
+    .filter((e) => e.all_day === true || e.time === null)
+    .map((e) => {
+      return (
+        <div className="flex">
+          <div>{e.time}</div>
+          <div>{e.description}</div>
+        </div>
+      );
+    });
+
+  const morningEvents = events
+    .filter((e) => e.time >= 1 && e.time <= 11)
+    .map((e) => {
+      return (
+        <div className="flex">
+          <div>{e.time}</div>
+          <div>{e.description}</div>
+        </div>
+      );
+    });
+
+  const afternoonEvents = events
+    .filter((e) => e.time >= 12 && e.time <= 5)
+    .map((e) => {
+      return (
+        <div className="flex">
+          <div>{e.time}</div>
+          <div>{e.description}</div>
+        </div>
+      );
+    });
+
+  const eveningEvents = events
+    .filter((e) => e.time >= 6 && e.time <= 24)
+    .map((e) => {
+      return (
+        <div className="flex">
+          <div>{e.time}</div>
+          <div>{e.description}</div>
+        </div>
+      );
+    });
+
   return (
     <div
       className={clsx(
@@ -24,7 +67,18 @@ export default async function WeekDay(props: {
         <p className="mr-2">{props.month}</p>
         <p>{props.day}</p>
       </div>
-      <div className="text-xs">{eventsDisplay}</div>
+      <div key="all day" className="text-xs h-1/4">
+        {allDayEvents}
+      </div>
+      <div key="morning" className="text-xs h-1/4">
+        {morningEvents}
+      </div>
+      <div key="afternooon" className="text-xs h-1/4">
+        {afternoonEvents}
+      </div>
+      <div key="evening" className="text-xs h-1/4">
+        {eveningEvents}
+      </div>
     </div>
   );
 }

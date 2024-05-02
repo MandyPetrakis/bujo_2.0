@@ -131,7 +131,9 @@ export async function fetchEventsByDay(date: string) {
       SELECT
         events.id,
         events.description,
-        events.date
+        events.date,
+        events.time,
+        events.all_day
       FROM events
         WHERE events.date = ${date};
     `;
