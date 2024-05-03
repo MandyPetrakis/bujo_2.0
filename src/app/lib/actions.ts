@@ -36,6 +36,15 @@ const DailyHydrationSchema = z.object({
   hydrations: z.string(),
 });
 
+const EventSchema = z.object({
+  id: z.string(),
+  user_id: z.string(),
+  description: z.string(),
+  date: z.string(),
+  time: z.coerce.number(),
+  all_day: z.coerce.boolean(),
+});
+
 //create and update daily_habits
 const CreateDailyHabit = DailyHabitSchema.omit({ id: true, completed: true });
 
@@ -208,6 +217,31 @@ export async function updateHydrationTracking(formData: FormData) {
   UPDATE daily_hydrations
   SET hydrations = ${hydrations}
   WHERE id = ${id}
+  `;
+
+  revalidatePath("/dashboard");
+}
+
+//add event
+
+const CreateEvent = EventSchema.omit({
+  id: true,
+  user_id: true,
+});
+
+export async function createEvent(formData: FormData) {
+  const { description, time, all_day, date } = CreateEvent.parse({
+    description: formData.get("description"),
+    date: formData.get("date"),
+    all_day: formData.get("all_day"),
+    time: formData.get("time"),
+  });
+
+  const user_id = "410544b2-4001-4271-9855-fec4b6a6442a";
+
+  await sql`
+  INSERT INTO events (description, date, all_day, user_id, time)
+  VALUES (${description}, ${date}, ${all_day}, ${user_id}, ${time})
   `;
 
   revalidatePath("/dashboard");
