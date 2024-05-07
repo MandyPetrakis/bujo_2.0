@@ -4,7 +4,7 @@ import WeekHeader from "@/app/components/week-spread/week-header";
 import Week from "@/app/components/week-spread/week";
 import { getDateOfWeek, createWeekArray } from "@/app/lib/data";
 import { isSunday, previousSunday } from "date-fns";
-import { PreviousButton, NextButton } from "@/app/components/buttons";
+import { PreviousButton, NextButton } from "@/app/components/buttons/buttons";
 
 export default function WeekSpread({
   params,

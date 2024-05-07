@@ -4,7 +4,7 @@ import Todos from "@/app/components/todos";
 import Goals from "@/app/components/month-spread/goals";
 import { createMonthArray } from "@/app/lib/data";
 
-import { PreviousButton, NextButton } from "@/app/components/buttons";
+import { PreviousButton, NextButton } from "@/app/components/buttons/buttons";
 import MonthTracking from "@/app/components/month-spread/month-tracking";
 
 export default function MonthSpread({

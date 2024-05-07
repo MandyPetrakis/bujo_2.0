@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { fetchSleepByDay, fetchSleepConfigsByDate } from "@/app/lib/data";
 import { differenceInHours, subDays } from "date-fns";
-import AddDataButton from "./addDataButton";
+import AddDataButton from "../buttons/addDataButton";
 
 export default async function SleepDay(props: {
   date: Date;

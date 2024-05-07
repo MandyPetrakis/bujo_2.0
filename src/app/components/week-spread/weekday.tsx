@@ -1,6 +1,6 @@
 import { fetchEventsByDay } from "@/app/lib/data";
 import clsx from "clsx";
-import AddEventButton from "./addEventButton";
+import AddEventButton from "../buttons/addEventButton";
 
 export default async function WeekDay(props: {
   day: number;

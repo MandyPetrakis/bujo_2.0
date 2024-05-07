@@ -1,5 +1,5 @@
 "use client";
-import { Forward, Backward } from "../../../public/icons";
+import { Forward, Backward } from "../../../../public/icons";
 import { useRouter } from "next/navigation";
 import { getISOWeeksInYear } from "date-fns";
 

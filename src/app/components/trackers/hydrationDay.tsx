@@ -3,7 +3,7 @@ import {
   fetchHydrationConfigsByDay,
 } from "@/app/lib/data";
 import clsx from "clsx";
-import AddDataButton from "./addDataButton";
+import AddDataButton from "../buttons/addDataButton";
 
 export default async function HydrationDay(props: {
   date: Date;
